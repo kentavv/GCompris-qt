@@ -1,0 +1,52 @@
+diff --git a/src/imports/calendar/DayOfWeekRow.qml b/src/imports/calendar/DayOfWeekRow.qml
+index 7b75313..913d82c 100644
+--- a/src/imports/calendar/DayOfWeekRow.qml
++++ b/src/imports/calendar/DayOfWeekRow.qml
+@@ -30,7 +30,7 @@
+ **
+ ****************************************************************************/
+ 
+-import QtQuick 2.12
++import QtQuick 2.0
+ import QtQuick.Calendar 1.0
+ 
+ AbstractDayOfWeekRow {
+diff --git a/src/imports/calendar/MonthGrid.qml b/src/imports/calendar/MonthGrid.qml
+index 610a951..c5d19cc 100644
+--- a/src/imports/calendar/MonthGrid.qml
++++ b/src/imports/calendar/MonthGrid.qml
+@@ -30,7 +30,7 @@
+ **
+ ****************************************************************************/
+ 
+-import QtQuick 2.12
++import QtQuick 2.0
+ import QtQuick.Calendar 1.0
+ 
+ AbstractMonthGrid {
+diff --git a/src/imports/calendar/WeekNumberColumn.qml b/src/imports/calendar/WeekNumberColumn.qml
+index 5021b11..1e667c8 100644
+--- a/src/imports/calendar/WeekNumberColumn.qml
++++ b/src/imports/calendar/WeekNumberColumn.qml
+@@ -30,7 +30,7 @@
+ **
+ ****************************************************************************/
+ 
+-import QtQuick 2.12
++import QtQuick 2.0
+ import QtQuick.Calendar 1.0
+ 
+ AbstractWeekNumberColumn {
+diff --git a/src/imports/calendar/plugins.qmltypes b/src/imports/calendar/plugins.qmltypes
+index 388f31e..77c173f 100644
+--- a/src/imports/calendar/plugins.qmltypes
++++ b/src/imports/calendar/plugins.qmltypes
+@@ -7,7 +7,7 @@ import QtQuick.tooling 1.2
+ // 'qmlplugindump -nonrelocatable QtQuick.Calendar 1.0'
+ 
+ Module {
+-    dependencies: ["QtQuick 2.12"]
++    dependencies: ["QtQuick 2.0"]
+     Component {
+         name: "QAbstractItemModel"
+         prototype: "QObject"
