@@ -8,7 +8,7 @@
  *   SPDX-License-Identifier: GPL-3.0-or-later
  */
 import QtQuick 2.6
-import QtQuick.Controls 1.5
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQml 2.2
 
@@ -325,138 +325,134 @@ Window {
     StackView {
         id: pageView
         anchors.fill: parent
-        initialItem: {
-            "item": "qrc:/gcompris/src/activities/" + ActivityInfoTree.rootMenu.name,
-            "properties": {
+        focus: true
+        Component.onCompleted: {
+            push("qrc:/gcompris/src/activities/" + ActivityInfoTree.rootMenu.name, {
                 'audioVoices': audioVoices,
                 'audioEffects': audioEffects,
                 'loading': loading,
                 'backgroundMusic': backgroundMusic
+            })
+        }
+
+        property var enterItem
+        property var exitItem
+
+        popEnter: (exitItem && exitItem.isDialog) ? popVTransition : popHTransition
+        popExit: (exitItem && exitItem.isDialog) ? popVTransitionExit : popHTransitionExit
+        pushEnter: (enterItem && enterItem.isDialog) ? pushVTransition : pushHTransition
+        pushExit: (enterItem && enterItem.isDialog) ? pushVTransitionExit : pushHTransitionExit
+
+        property Transition pushHTransition: Transition {
+            PropertyAnimation {
+                property: "x"
+                from: pageView.width
+                to: 0
+                duration: 500
+                easing.type: Easing.OutSine
             }
         }
 
-        focus: true
+        property Transition pushHTransitionExit: Transition {
+            PropertyAnimation {
+                property: "x"
+                from: 0
+                to: -pageView.width
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
+        property Transition popHTransition: Transition {
+            PropertyAnimation {
+                property: "x"
+                from: -pageView.width
+                to: 0
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
+        property Transition popHTransitionExit: Transition {
+            PropertyAnimation {
+                property: "x"
+                from: 0
+                to: pageView.width
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
 
-        delegate: StackViewDelegate {
-            id: root
-            function getTransition(properties)
-            {
-                audioVoices.clearQueue()
-                audioVoices.stop()
+        property Transition pushVTransition: Transition {
+            PropertyAnimation {
+                property: "y"
+                from: -pageView.height
+                to: 0
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
+        property Transition pushVTransitionExit: Transition {
+            PropertyAnimation {
+                property: "y"
+                from: 0
+                to: pageView.height
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
+        property Transition popVTransition: Transition {
+            PropertyAnimation {
+                property: "y"
+                from: pageView.height
+                to: 0
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
+        property Transition popVTransitionExit: Transition {
+            PropertyAnimation {
+                property: "y"
+                from: 0
+                to: -pageView.height
+                duration: 500
+                easing.type: Easing.OutSine
+            }
+        }
 
-                if(!properties.exitItem.isDialog &&        // if coming from menu and
-                        !properties.enterItem.isDialog)    // going into an activity then
-                    playIntroVoice(properties.enterItem.activityInfo.name); // play intro
+        function pushElement(element) {
+            audioVoices.clearQueue()
+            audioVoices.stop()
+            enterItem = element
+            exitItem = currentItem
+            push(element)
 
-                // Don't restart an activity if you click on help
-                if (!properties.exitItem.isDialog ||       // if coming from menu or
-                    properties.enterItem.alwaysStart)  // start signal enforced (for special case like transition from config-dialog to editor)
-                    properties.enterItem.start();
-
-                if(properties.name === "pushTransition") {
-                    if(properties.enterItem.isDialog) {
-                        return pushVTransition
-                    } else {
-                        if(properties.enterItem.isMusicalActivity)
-                            main.isMusicalActivityRunning = true
-                        return pushHTransition
-                    }
-                } else {
-                    if(properties.exitItem.isDialog) {
-                        return popVTransition
-                    } else {
-                        main.isMusicalActivityRunning = false
-                        return popHTransition
-                    }
-
-                }
+            // if coming from menu and going into an activity then
+            if(!exitItem.isDialog && !enterItem.isDialog) {
+                playIntroVoice(enterItem.activityInfo.name);
+            }
+            
+            // Don't restart an activity if you click on help
+            if (!exitItem.isDialog ||    // if coming from menu or
+                enterItem.alwaysStart) { // start signal enforced (for special case like transition from config-dialog to editor)
+                    enterItem.start();
+            }
+            if(enterItem.isMusicalActivity) {
+                main.isMusicalActivityRunning = true
             }
 
-            function transitionFinished(properties)
-            {
-                properties.exitItem.opacity = 1
-                if(!properties.enterItem.isDialog) {
-                    properties.exitItem.stop()
-                }
+            exitItem.opacity = 1
+            if(!enterItem.isDialog) {
+                exitItem.stop()
             }
+        }
 
-            property Component pushHTransition: StackViewTransition {
-                PropertyAnimation {
-                    target: enterItem
-                    property: "x"
-                    from: target.width
-                    to: 0
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-                PropertyAnimation {
-                    target: exitItem
-                    property: "x"
-                    from: 0
-                    to: -target.width
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
+        function popElement(element) {
+            enterItem = pageView.get(pageView.count-1)
+            exitItem = currentItem
+
+            if(!currentItem.isDialog) {
+                currentItem.stop()
             }
-
-            property Component popHTransition: StackViewTransition {
-                PropertyAnimation {
-                    target: enterItem
-                    property: "x"
-                    from: -target.width
-                    to: 0
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-                PropertyAnimation {
-                    target: exitItem
-                    property: "x"
-                    from: 0
-                    to: target.width
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-            }
-
-            property Component pushVTransition: StackViewTransition {
-                PropertyAnimation {
-                    target: enterItem
-                    property: "y"
-                    from: -target.height
-                    to: 0
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-                PropertyAnimation {
-                    target: exitItem
-                    property: "y"
-                    from: 0
-                    to: target.height
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-            }
-
-            property Component popVTransition: StackViewTransition {
-                PropertyAnimation {
-                    target: enterItem
-                    property: "y"
-                    from: target.height
-                    to: 0
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-                PropertyAnimation {
-                    target: exitItem
-                    property: "y"
-                    from: 0
-                    to: -target.height
-                    duration: 500
-                    easing.type: Easing.OutSine
-                }
-            }
-
-            property Component replaceTransition: pushHTransition
+            pop()
         }
     }
     /// @endcond
