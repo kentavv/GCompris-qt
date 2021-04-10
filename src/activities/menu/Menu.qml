@@ -14,8 +14,7 @@ import QtGraphicalEffects 1.0
 import "qrc:/gcompris/src/core/core.js" as Core
 
 // For TextField
-import QtQuick.Controls 1.5
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.0
 
 /**
  * GCompris' top level menu screen.
@@ -709,7 +708,7 @@ ActivityBase {
                 id: searchTextField
                 width: parent.width
                 height: parent.height
-                textColor: "black"
+                color: "black"
                 font.pixelSize: height * 0.5
                 font.bold: true
                 opacity: 0.5
@@ -733,13 +732,6 @@ ActivityBase {
                     if (ApplicationInfo.isMobile && !ApplicationSettings.isVirtualKeyboard)
                         Qt.inputMethod.hide();
                     activity.focus = true;
-                }
-
-                style: TextFieldStyle {
-                    placeholderTextColor: "black"
-                    background: Rectangle {
-                        opacity: 0
-                    }
                 }
 
                 placeholderText: qsTr("Search specific activities")

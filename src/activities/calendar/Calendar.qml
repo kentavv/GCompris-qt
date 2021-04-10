@@ -10,9 +10,7 @@
 
 import QtQuick 2.6
 import GCompris 1.0
-import QtQuick.Controls 1.5
-import QtQuick.Controls.Private 1.0
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.0
 import "../../core"
 import "calendar.js" as Activity
 import "calendar_dataset.js" as Dataset
@@ -254,8 +252,9 @@ ActivityBase {
                 font.bold: false
                 delegate: Rectangle {
                     color: "lightgray"
-                    height: Math.round(TextSingleton.implicitHeight * 2.25)
+                    height: 50
                     width: 50
+                    radius: 5
                     Label {
                         text: grid.locale.dayName((grid.locale.firstDayOfWeek+index) % 7, Locale.ShortFormat)
                         font.family: GCSingletonFontLoader.fontLoader.name
