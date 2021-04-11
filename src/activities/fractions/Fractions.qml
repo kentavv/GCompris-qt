@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 import QtQuick 2.6
-import QtCharts 2.6
+import QtCharts 2.0
 
 import "../../core"
 import "fractions.js" as Activity
@@ -17,6 +17,7 @@ ActivityBase {
 
     pageComponent: Rectangle {
         id: background
+        color: "#373737"
         anchors.fill: parent
         signal start
         signal stop
@@ -42,6 +43,7 @@ ActivityBase {
             id: chart
             width: Math.min(parent.width, parent.height-bar.height)
             height: width
+            backgroundColor : "#80FFFFFF"
             legend.visible: false
             antialiasing: true
 
