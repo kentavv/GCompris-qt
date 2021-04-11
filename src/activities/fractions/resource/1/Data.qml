@@ -11,12 +11,29 @@ Data {
 
     data: [
         {
-            "numerator": 2,
-            "denominator": 3
+            "numerator": 1,
+            "denominator": 2,
+            "instruction": qsTr("Select half of the pie.")
         },
         {
             "numerator": 1,
-            "denominator": 5
+            "denominator": 3,
+            "instruction": qsTr("Select a third of the pie.")
         },
+        {
+            "numerator": 2,
+            "denominator": 3,
+            "instruction": qsTr("Select two thirds of the pie.")
+        },
+        {
+            "numerator": 1,
+            "denominator": 4,
+            "instruction": qsTr("Select a quarter of the pie.")
+        },
+        {
+            "numerator": 3,
+            "denominator": 6,
+            "instruction": qsTr("Select half of the pie.")
+        }
     ]
 }

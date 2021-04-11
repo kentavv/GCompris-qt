@@ -5,6 +5,7 @@
  */
 import QtQuick 2.6
 import QtCharts 2.0
+import GCompris 1.0
 
 import "../../core"
 import "fractions.js" as Activity
@@ -35,50 +36,86 @@ ActivityBase {
             property alias background: background
             property alias bar: bar
             property alias bonus: bonus
+            property alias pieSeries: pieSeries
             property var levels: activity.datasetLoader.data
         }
 
         onStart: { Activity.start(items) }
         onStop: { Activity.stop() }
 
+        //instruction rectangle
+        Rectangle {
+            id: instruction
+            anchors.fill: instructionTxt
+            opacity: 0.8
+            radius: 10
+            border.width: 2
+            z: 10
+            border.color: "#DDD"
+            color: "#373737"
+        }
+        //instruction for playing the game
+        GCText {
+            id: instructionTxt
+            anchors {
+                top: parent.top
+                topMargin: 10
+                horizontalCenter: parent.horizontalCenter
+            }
+            text: items.levels[bar.level-1].instruction
+            opacity: instruction.opacity
+            z: instruction.z
+            fontSize: background.vert ? regularSize : smallSize
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            width: Math.max(Math.min(parent.width * 0.8, text.length * 8), parent.width * 0.3)
+            wrapMode: TextEdit.WordWrap
+        }
+
         ChartView {
             id: chart
-            width: Math.min(parent.width, parent.height-bar.height * 1.5)
+            width: Math.min(parent.width - 2*(okButton.width+okButton.anchors.rightMargin), parent.height-bar.height * 1.5 - instruction.height)
             height: width
-            backgroundColor : "#80FFFFFF"
+            backgroundColor: "#80FFFFFF"
             legend.visible: false
             antialiasing: true
-
+            anchors {
+                top: instruction.bottom
+                horizontalCenter: parent.horizontalCenter
+            }
+            readonly property string selectedColor: "#ff0000"
+            readonly property string unselectedColor: "#00ffff"
             PieSeries {
                 id: pieSeries
                 size: 0.9
                 PieSlice {
                     value: 1;
-                    color: "red"
+                    color: chart.unselectedColor
                     borderColor: "#373737"
                     borderWidth: 5
-                    property bool testBool: true
                 }
+
                 onClicked: {
-                    slice.testBool = !slice.testBool;
-                    print(slice.testBool);
+                    if(slice.color == chart.selectedColor) {
+                        //numerator.value --;
+                        slice.color = chart.unselectedColor;
+                    }
+                    else {
+                        //numerator.value ++;
+                        slice.color = chart.selectedColor;
+                    }
+                }
+
+                function setSliceStyle(sliceNumber, selected) {
+                    var slice = pieSeries.at(sliceNumber);
+                    slice.borderColor = "#373737";
+                    slice.borderWidth = 5;
+                    slice.color = selected ? chart.selectedColor : chart.unselectedColor;
                 }
             }
         }
 
-        function setSliceStyle(sliceNumber) {
-            pieSeries.at(sliceNumber).borderColor = "#373737";
-            pieSeries.at(sliceNumber).borderWidth = 5;
-            Object.defineProperty(pieSeries.at(sliceNumber), "testBool",
-                                                    {
-                                                         enumerable: true,
-                                                         configurable: true,
-                                                         writable: true,
-                                                         value: true
-                                                     });
-        }
-
-        Column {
+        /*Column {
             anchors.verticalCenter: chart.verticalCenter
             anchors.left: chart.right
             spacing: 50
@@ -90,12 +127,12 @@ ActivityBase {
                 onLeftClicked: {
                     if(value > 0) {
                         -- value;
-                        pieSeries.at(value).color = "red";
+                        pieSeries.at(startingPieIndex).color = chart.unselectedColor;
                     }
                 }
                 onRightClicked: {
                     if(value < denominator.value) { // Do we want a max
-                        pieSeries.at(value).color = "blue";
+                        pieSeries.at(value).color = chart.selectedColor;
                         ++ value;
                     }
                 }
@@ -130,13 +167,41 @@ ActivityBase {
                            pieSeries.at(i).value = size;
                         }
                         pieSeries.append(value, size);
-                        pieSeries.at(pieSeries.count-1).color = "red";
+                        pieSeries.at(pieSeries.count-1).color = chart.unselectedColor;
                         setSliceStyle(pieSeries.count-1);
                     }
                 }
             }
-        }
+        }*/
 
+        BarButton {
+            id: okButton
+            enabled: !bonus.isPlaying
+            anchors {
+                bottom: bar.top
+                right: parent.right
+                rightMargin: 10 * ApplicationInfo.ratio
+                bottomMargin: height * 0.5
+            }
+            source: "qrc:/gcompris/src/core/resource/bar_ok.svg"
+            sourceSize.width: 60 * ApplicationInfo.ratio
+
+            onClicked: {
+                // count how many selected
+                var selected = 0;
+                for(var i = 0 ; i < pieSeries.count ; ++ i) {
+                    if(pieSeries.at(i).color == chart.selectedColor) {
+                        selected ++;
+                    }
+                }
+                if(selected == items.levels[bar.level-1].numerator) {
+                    bonus.good("lion");
+                }
+                else {
+                    bonus.bad("lion");
+                }
+            }
+        }
         DialogChooseLevel {
             id: dialogActivityConfig
             currentActivity: activity.activityInfo

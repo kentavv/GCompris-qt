@@ -26,6 +26,13 @@ function stop() {
 
 function initLevel() {
     items.bar.level = currentLevel + 1
+
+    items.pieSeries.clear();
+    var size = 1./levels[currentLevel].denominator;
+    for(var i = 0 ; i < levels[currentLevel].denominator ; ++ i) {
+        items.pieSeries.append(1, size);
+        items.pieSeries.setSliceStyle(items.pieSeries.count-1, false);
+    }
 }
 
 function nextLevel() {
