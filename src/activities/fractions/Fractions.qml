@@ -37,6 +37,8 @@ ActivityBase {
             property alias bar: bar
             property alias bonus: bonus
             property alias pieSeries: pieSeries
+            property alias numeratorValue: numeratorText.value
+            property alias denominatorValue: denominatorText.value
             property var levels: activity.datasetLoader.data
         }
 
@@ -74,7 +76,7 @@ ActivityBase {
 
         ChartView {
             id: chart
-            width: Math.min(parent.width - 2*(okButton.width+okButton.anchors.rightMargin), parent.height-bar.height * 1.5 - instruction.height)
+            width: Math.min(parent.width - 2 * (okButton.width + okButton.anchors.rightMargin), parent.height-bar.height * 1.5 - instruction.height)
             height: width
             backgroundColor: "#80FFFFFF"
             legend.visible: false
@@ -97,11 +99,11 @@ ActivityBase {
 
                 onClicked: {
                     if(slice.color == chart.selectedColor) {
-                        //numerator.value --;
+                        numeratorText.value --;
                         slice.color = chart.unselectedColor;
                     }
                     else {
-                        //numerator.value ++;
+                        numeratorText.value ++;
                         slice.color = chart.selectedColor;
                     }
                 }
@@ -112,6 +114,44 @@ ActivityBase {
                     slice.borderWidth = 5;
                     slice.color = selected ? chart.selectedColor : chart.unselectedColor;
                 }
+            }
+        }
+
+        Column {
+            id: fractionDisplay
+            anchors.verticalCenter: chart.verticalCenter
+            anchors.left: chart.right
+            spacing: 15
+            width: 80
+            GCText {
+                id: numeratorText
+                width: fractionDisplay.width
+                horizontalAlignment: Text.AlignHCenter
+                font.weight: Font.DemiBold
+                style: Text.Outline
+                styleColor: "black"
+                color: "white"
+                text: "" + value
+                property int value: 0
+            }
+
+            Rectangle {
+                width: fractionDisplay.width
+                height: 5
+                border.width: 5
+                color: "black"
+            }
+
+            GCText {
+                id: denominatorText
+                width: fractionDisplay.width
+                horizontalAlignment: Text.AlignHCenter
+                font.weight: Font.DemiBold
+                style: Text.Outline
+                styleColor: "black"
+                color: "white"
+                text: "" + value
+                property int value: 0
             }
         }
 
