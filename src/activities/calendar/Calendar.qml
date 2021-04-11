@@ -96,8 +96,6 @@ ActivityBase {
             property bool navigationBarVisible
             property var minimumDate
             property var maximumDate
-            property var visibleYear
-            property var visibleMonth
             property date currentDate
             property int selectedDay
             onSelectedDayChanged: {
@@ -106,76 +104,41 @@ ActivityBase {
                 calendar.currentDate = date;
                 Activity.daySelected = selectedDay;
             }
-            onVisibleYearChanged: {
-                calendar.currentDate = new Date(visibleYear, visibleMonth)
-                Activity.yearSelected = visibleYear
-            }
-            onVisibleMonthChanged: {
-                calendar.currentDate = new Date(visibleYear, visibleMonth)
-                Activity.monthSelected = visibleMonth
-            }
 
             function showPreviousMonth() {
-                if((calendar.visibleYear + calendar.visibleMonth) <= Activity.minRange) {
-                    return;
+                var date = new Date(calendar.currentDate);
+                date.setMonth(date.getMonth()-1);
+                if(minimumDate.getTime() <= date.getTime()) {
+                       calendar.currentDate = date;
                 }
-                var year = calendar.currentDate.getFullYear()
-                var month = calendar.currentDate.getMonth()-1
-                if(month < 0) {
-                    month = 11
-                    year --
-                }
-                calendar.visibleYear = year;
-                calendar.visibleMonth = month;
             }
             function showNextMonth() {
-                if((calendar.visibleYear + calendar.visibleMonth) >= Activity.maxRange) {
-                    return;
+                var date = new Date(calendar.currentDate);
+                date.setMonth(date.getMonth()+1);
+                if(date.getTime()<= maximumDate.getTime()) {
+                       calendar.currentDate = date;
                 }
-                var year = calendar.currentDate.getFullYear()
-                var month = calendar.currentDate.getMonth()+1
-                if(month > 11) {
-                    month = 0
-                    year ++
-                }
-                calendar.visibleYear = year;
-                calendar.visibleMonth = month;
             }
             function selectPreviousDay() {
-                /*if((calendar.visibleYear + calendar.visibleMonth) <= Activity.maxRange) {
-                    return;
-                }*/
-                var date = new Date(calendar.currentDate);
-                date.setDate(date.getDate()-1);
-                calendar.currentDate = date;
-                calendar.selectedDay = calendar.currentDate.getDate();
+                addDaysToCurrentDate(-1);
             }
             function selectNextDay() {
-                /*if((calendar.visibleYear + calendar.visibleMonth) >= Activity.maxRange) {
-                    return;
-                }*/
-                var date = new Date(calendar.currentDate);
-                date.setDate(date.getDate()+1);
-                calendar.currentDate = date;
-                calendar.selectedDay = calendar.currentDate.getDate();
+                addDaysToCurrentDate(1);
             }
             function selectPreviousWeek() {
-                /*if((calendar.visibleYear + calendar.visibleMonth) <= Activity.maxRange) {
-                    return;
-                }*/
-                var date = new Date(calendar.currentDate);
-                date.setDate(date.getDate()-7);
-                calendar.currentDate = date;
-                calendar.selectedDay = calendar.currentDate.getDate();
+                addDaysToCurrentDate(-7);
             }
             function selectNextWeek() {
-                /*if((calendar.visibleYear + calendar.visibleMonth) >= Activity.maxRange) {
-                    return;
-                }*/
+                addDaysToCurrentDate(7);
+            }
+            function addDaysToCurrentDate(daysToAdd) {
                 var date = new Date(calendar.currentDate);
-                date.setDate(date.getDate()+7);
-                calendar.currentDate = date;
-                calendar.selectedDay = calendar.currentDate.getDate();
+                date.setDate(date.getDate()+daysToAdd);
+                if(minimumDate.getTime() <= date.getTime() &&
+                   date.getTime()<= maximumDate.getTime()) {
+                    calendar.currentDate = date;
+                    calendar.selectedDay = calendar.currentDate.getDate();
+                }
             }
             function selectFirstDayOfMonth() {
                 var date = new Date(calendar.currentDate);
@@ -211,7 +174,7 @@ ActivityBase {
                     anchors.leftMargin: parent.height * 0.1
                     source: "qrc:/gcompris/src/core/resource/scroll_down.svg"
                     rotation: 90
-                    visible: ((calendar.visibleYear + calendar.visibleMonth) > Activity.minRange) ? true : false
+                    visible: calendar.currentDate.getFullYear() > calendar.minimumDate.getFullYear() || (calendar.currentDate.getFullYear() == calendar.minimumDate.getFullYear() && calendar.currentDate.getMonth() > calendar.minimumDate.getMonth())
                     onClicked: {
                         calendar.showPreviousMonth();
                     }
@@ -239,7 +202,7 @@ ActivityBase {
                     anchors.rightMargin: previousMonth.anchors.leftMargin
                     source: "qrc:/gcompris/src/core/resource/scroll_down.svg"
                     rotation: 270
-                    visible: ((calendar.visibleYear + calendar.visibleMonth) < Activity.maxRange) ? true : false
+                    visible: calendar.currentDate.getFullYear() < calendar.maximumDate.getFullYear() || (calendar.currentDate.getFullYear() == calendar.maximumDate.getFullYear() && calendar.currentDate.getMonth() < calendar.maximumDate.getMonth())
                     onClicked: {
                         calendar.showNextMonth();
                     }
