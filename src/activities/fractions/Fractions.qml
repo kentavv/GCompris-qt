@@ -55,14 +55,25 @@ ActivityBase {
                     color: "red"
                     borderColor: "#373737"
                     borderWidth: 5
+                    property bool testBool: true
                 }
-                onClicked: print(slice.color)
+                onClicked: {
+                    slice.testBool = !slice.testBool;
+                    print(slice.testBool);
+                }
             }
         }
 
         function setSliceStyle(sliceNumber) {
             pieSeries.at(sliceNumber).borderColor = "#373737";
             pieSeries.at(sliceNumber).borderWidth = 5;
+            Object.defineProperty(pieSeries.at(sliceNumber), "testBool",
+                                                    {
+                                                         enumerable: true,
+                                                         configurable: true,
+                                                         writable: true,
+                                                         value: true
+                                                     });
         }
 
         Column {
