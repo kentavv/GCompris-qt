@@ -721,6 +721,9 @@ ActivityBase {
                 // an input-cursor:
                 activeFocusOnPress: true //ApplicationInfo.isMobile ? !ApplicationSettings.isVirtualKeyboard : true
 
+                background: Rectangle {
+                    opacity: 0
+                }
                 Keys.onReturnPressed: {
                     if (ApplicationInfo.isMobile && !ApplicationSettings.isVirtualKeyboard)
                         Qt.inputMethod.hide();
