@@ -9,12 +9,15 @@
 .import QtQuick 2.6 as Quick
 
 var currentLevel = 0
-var numberOfLevel = 4
+var numberOfLevel
+var levels
 var items
 
 function start(items_) {
     items = items_
     currentLevel = 0
+    levels = items.levels
+    numberOfLevel = levels.length
     initLevel()
 }
 

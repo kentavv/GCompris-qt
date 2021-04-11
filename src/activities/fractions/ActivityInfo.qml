@@ -24,4 +24,5 @@ ActivityInfo {
   credit: ""
   section: "fun"
   createdInVersion: 9800
+  levels: "1"
 }
