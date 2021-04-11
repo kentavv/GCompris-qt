@@ -41,7 +41,7 @@ ActivityBase {
 
         ChartView {
             id: chart
-            width: Math.min(parent.width, parent.height-bar.height)
+            width: Math.min(parent.width, parent.height-bar.height * 1.5)
             height: width
             backgroundColor : "#80FFFFFF"
             legend.visible: false
@@ -49,9 +49,20 @@ ActivityBase {
 
             PieSeries {
                 id: pieSeries
-                PieSlice { value: 1; color: "red" }
+                size: 0.9
+                PieSlice {
+                    value: 1;
+                    color: "red"
+                    borderColor: "#373737"
+                    borderWidth: 5
+                }
                 onClicked: print(slice.color)
             }
+        }
+
+        function setSliceStyle(sliceNumber) {
+            pieSeries.at(sliceNumber).borderColor = "#373737";
+            pieSeries.at(sliceNumber).borderWidth = 5;
         }
 
         Column {
@@ -107,6 +118,7 @@ ActivityBase {
                         }
                         pieSeries.append(value, size);
                         pieSeries.at(pieSeries.count-1).color = "red";
+                        setSliceStyle(pieSeries.count-1);
                     }
                 }
             }
