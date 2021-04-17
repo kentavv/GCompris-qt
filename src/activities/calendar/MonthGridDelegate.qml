@@ -17,11 +17,7 @@ import "../../core"
 ColumnLayout {
     id: root
 
-    required property int year
-    required property int month
-    required property int day
-
-    required property int visibleMonth
+    property int visibleMonth
 
     readonly property color sameMonthDateTextColor: "#373737"
     readonly property color selectedDateColor: "#3778d0"
