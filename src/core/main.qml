@@ -430,11 +430,6 @@ Window {
                 playIntroVoice(enterItem.activityInfo.name);
             }
             
-            // Don't restart an activity if you click on help
-            if (!exitItem.isDialog ||    // if coming from menu or
-                enterItem.alwaysStart) { // start signal enforced (for special case like transition from config-dialog to editor)
-                    enterItem.start();
-            }
             if(enterItem.isMusicalActivity) {
                 main.isMusicalActivityRunning = true
             }
@@ -443,16 +438,26 @@ Window {
             if(!enterItem.isDialog) {
                 exitItem.stop()
             }
+            // Don't restart an activity if you click on help
+            if (!exitItem.isDialog ||    // if coming from menu or
+                enterItem.alwaysStart) { // start signal enforced (for special case like transition from config-dialog to editor)
+                    enterItem.start();
+            }
         }
 
         function popElement(element) {
-            enterItem = pageView.get(pageView.count-1)
+            enterItem = pageView.get(pageView.depth-2)
             exitItem = currentItem
 
-            if(!currentItem.isDialog) {
+            if(!enterItem.isDialog) {
                 currentItem.stop()
             }
             pop()
+            // Don't restart an activity if you click on help
+            if (!exitItem.isDialog ||    // if coming from menu or
+                enterItem.alwaysStart) { // start signal enforced (for special case like transition from config-dialog to editor)
+                    enterItem.start();
+            }
         }
     }
     /// @endcond
