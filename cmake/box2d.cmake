@@ -75,23 +75,25 @@ if(NOT ${QML_BOX2D_MODULE} STREQUAL "disabled")
     # for visual studio, we need to create a vcxproj
     if(WIN32 AND NOT MINGW)
       set(_qmake_options -spec win32-msvc -tp vc)
+      set(BOX2D_BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} /p:Configuration=Release /p:Platform=x64)
     else()
       set(_qmake_options "")
+      set(BOX2D_BUILD_COMMAND "${CMAKE_MAKE_PROGRAM}")
     endif()
     # Ninja is not supported by qmake.
     # In case Ninja is set as generator, use make on Linux, nmake on Windows
     if(${CMAKE_GENERATOR} MATCHES "Ninja")
       if(WIN32)
-        set(QMAKE_MAKE_PROGRAM "nmake")
+        set(BOX2D_BUILD_COMMAND "nmake")
       else()
-        set(QMAKE_MAKE_PROGRAM "make")
+        set(BOX2D_BUILD_COMMAND "make")
       endif()
     endif()
     ExternalProject_Add(qml_box2d
       DOWNLOAD_COMMAND ""
       SOURCE_DIR ${_box2d_source_dir}
       CONFIGURE_COMMAND ${_qmake_program} ${_qmake_options} ${_box2d_source_dir}/box2d.pro
-      BUILD_COMMAND ${QMAKE_MAKE_PROGRAM}
+      BUILD_COMMAND ${BOX2D_BUILD_COMMAND}
       INSTALL_DIR ${_box2d_install_dir}
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${_box2d_library_dir}${_box2d_library_file} ${_box2d_source_dir}/qmldir ${_box2d_install_dir}
       )

@@ -55,8 +55,9 @@ if(NOT ${QTQUICKCALENDAR_MODULE} STREQUAL "disabled")
         get_property(_qmake_program TARGET Qt5::qmake PROPERTY IMPORT_LOCATION)
     endif()
     set(_calendar_source_dir ${CMAKE_SOURCE_DIR}/external/qtquickcalendar)
+    set(_calendar_qml_files_dir ${_calendar_source_dir}/src/imports/calendar/)
     if(WIN32)
-      set(_calendar_library_dir "release/")
+      set(_calendar_library_dir "qml/QtQuick/Calendar/")
       set(_calendar_library_file "qtquickcalendarplugin.dll")
     elseif(CMAKE_HOST_APPLE)
       set(_calendar_library_dir "")
@@ -74,28 +75,30 @@ if(NOT ${QTQUICKCALENDAR_MODULE} STREQUAL "disabled")
 
     # for visual studio, we need to create a vcxproj
     if(WIN32 AND NOT MINGW)
-      set(_qmake_options -spec win32-msvc -tp vc)
+      set(_qmake_options -spec win32-msvc -tp vc -r) # Needs to be recursive, else it does not generate .vcxproj
+      set(CALENDAR_BUILD_COMMAND ${CMAKE_MAKE_PROGRAM} /p:Configuration=Release /p:Platform=x64)
     else()
       set(_qmake_options "")
+      set(CALENDAR_BUILD_COMMAND "${CMAKE_MAKE_PROGRAM}")
     endif()
     # Ninja is not supported by qmake.
     # In case Ninja is set as generator, use make on Linux, nmake on Windows
     if(${CMAKE_GENERATOR} MATCHES "Ninja")
       if(WIN32)
-        set(QMAKE_MAKE_PROGRAM "nmake")
+        set(CALENDAR_BUILD_COMMAND "nmake")
       else()
-        set(QMAKE_MAKE_PROGRAM "make")
+        set(CALENDAR_BUILD_COMMAND "make")
       endif()
     endif()
     ExternalProject_Add(qtquick_calendar_project
       DOWNLOAD_COMMAND ""
       SOURCE_DIR ${_calendar_source_dir}
       CONFIGURE_COMMAND ${_qmake_program} ${_qmake_options} ${_calendar_source_dir}/qtquickcalendar.pro
-      BUILD_COMMAND ${QMAKE_MAKE_PROGRAM}
+      BUILD_COMMAND ${CALENDAR_BUILD_COMMAND}
       PATCH_COMMAND ${GIT_EXECUTABLE} apply ${CMAKE_SOURCE_DIR}/cmake/patch_Qt512_to_Qt57.diff
       INSTALL_DIR ${_calendar_install_dir}
       # TODO install the .qml instead of qmlc?
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${_calendar_library_dir}${_calendar_library_file} ${_calendar_library_dir}/qmldir ${_calendar_library_dir}/DayOfWeekRow.qmlc ${_calendar_library_dir}/MonthGrid.qmlc ${_calendar_library_dir}/WeekNumberColumn.qmlc ${_calendar_install_dir}
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${_calendar_library_dir}${_calendar_library_file} ${_calendar_library_dir}qmldir ${_calendar_qml_files_dir}DayOfWeekRow.qml ${_calendar_qml_files_dir}MonthGrid.qml ${_calendar_qml_files_dir}WeekNumberColumn.qml ${_calendar_install_dir}
       )
 
     add_library(qtquickcalendar SHARED IMPORTED)
