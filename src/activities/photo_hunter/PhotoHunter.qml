@@ -215,7 +215,6 @@ ActivityBase {
                 z: background.startedHelp ? 5 : -5
                 opacity: background.startedHelp ? 1 : 0
                 enabled: background.startedHelp
-                value: 0
                 snapMode: Slider.NoSnap
                 stepSize: 0
 
