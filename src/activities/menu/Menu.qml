@@ -7,14 +7,14 @@
  *
  *   SPDX-License-Identifier: GPL-3.0-or-later
  */
-import QtQuick 2.6
+import QtQuick 2.9
 import "../../core"
 import GCompris 1.0
 import QtGraphicalEffects 1.0
 import "qrc:/gcompris/src/core/core.js" as Core
 
 // For TextField
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 
 /**
  * GCompris' top level menu screen.
@@ -59,11 +59,9 @@ ActivityBase {
     onDisplayDialog: pageView.pushElement(dialog)
 
     onDisplayDialogs: {
-        var toPush = [];
         for (var i = 0; i < dialogs.length; i++) {
-            toPush.push({item: dialogs[i]});
+            pageView.pushElement(dialogs[i]);
         }
-        pageView.push(toPush); // todo check if it works correctly
     }
 
     //when selecting a new language in config, we need to open the newVoicesDialog,

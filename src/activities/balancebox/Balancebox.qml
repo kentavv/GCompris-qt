@@ -7,7 +7,7 @@
  *
  *   SPDX-License-Identifier: GPL-3.0-or-later
  */
-import QtQuick 2.6
+import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtSensors 5.0
 import QtGraphicalEffects 1.0
@@ -88,7 +88,6 @@ ActivityBase {
             activity.start.connect(start)
             activity.stop.connect(stop)
             items.dpi = Math.round(Screen.pixelDensity*25.4);
-
         }
 
         onStart: {
