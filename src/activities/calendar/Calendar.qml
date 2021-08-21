@@ -15,7 +15,7 @@ import "../../core"
 import "calendar.js" as Activity
 import "calendar_dataset.js" as Dataset
 import QtQuick.Calendar 1.0
-import QtQuick.Layouts 1.5
+import QtQuick.Layouts 1.3
 
 ActivityBase {
     id: activity
@@ -96,7 +96,7 @@ ActivityBase {
             property bool navigationBarVisible
             property var minimumDate
             property var maximumDate
-            property date currentDate
+            property date currentDate: new Date()
             property int selectedDay
             onSelectedDayChanged: {
                 var date = new Date(calendar.currentDate);
