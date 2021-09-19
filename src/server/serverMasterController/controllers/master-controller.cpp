@@ -342,7 +342,6 @@ namespace controllers {
 
     void MasterController::selectClient(Client *client)
     {
-        implementation->navigationController->goEditClientView(client);
     }
 }
 }

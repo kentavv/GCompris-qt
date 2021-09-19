@@ -52,7 +52,6 @@ Window {
         onGoManagePupilsView: contentFrame.replace("views/ManagePupilsView.qml")
         onGoCreateClientView: contentFrame.replace("views/CreateClientView.qml")
         onGoDashboardView: contentFrame.replace("views/DashboardView.qml")
-        onGoEditClientView: contentFrame.replace("views/EditClientView.qml", {selectedClient: client})
         onGoFindClientView: contentFrame.replace("views/FindClientView.qml")
         onGoManageWorkPlanView: contentFrame.replace("views/ManageWorkPlanView.qml")
     }

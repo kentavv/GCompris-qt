@@ -11,7 +11,6 @@ import QtQuick 2.9
 import "../../core"
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import "../server.js" as Activity
 
 Popup {
     id: modifyPupilGroupsDialog
@@ -152,9 +151,9 @@ Popup {
                 width: parent.width
                 height: parent.height
 
-                model: Activity.groupsNamesArray
+                model: masterController.ui_groups
                 delegate: CheckDelegate {
-                    text: modelData
+                    text: modelData.name
 
                     onCheckedChanged: {
                         print("checked changed: " + index)
@@ -167,7 +166,6 @@ Popup {
     onClosed: {
         console.log("close popup")
         var pupilGroupsCheckedList = []
-        pupilGroupsCheckedList = Activity.readPupilGroupsChecked(index)
 
         groupNamesListView.contains()
 

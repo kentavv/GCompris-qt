@@ -16,7 +16,6 @@ import "../components"
 import "../../core"
 import QtQuick.Controls 2.2
 import "."
-import "../server.js" as Activity
 
 Item {
     id: managePupilsView

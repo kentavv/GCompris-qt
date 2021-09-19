@@ -21,7 +21,6 @@ namespace controllers {
         void goManagePupilsView();
         void goCreateClientView();
         void goDashboardView();
-        void goEditClientView(cm::models::Client *client);
         void goFindClientView();
         void goManageWorkPlanView();
         void goAddPupilsFromListDialog();

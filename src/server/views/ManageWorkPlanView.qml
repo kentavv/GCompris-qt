@@ -16,12 +16,10 @@ import "../components"
 import "../../core"
 import QtQuick.Controls 2.2
 import "."
-import "../server.js" as Activity
 
 Item {
 
-  //  property Client newClient: masterController.ui_newClient
-
+    property var dataArray: [{"color":"red"},{"color":"blue"},{"color":"yellow"}]
     Rectangle {
         anchors.fill: parent
         color: Style.colourBackground
@@ -241,7 +239,7 @@ Item {
         anchors.left: column2.right
         anchors.top: parent.top
 
-        model: Activity.dataArray
+        model: dataArray
 
         Component {
             id: contactsDelegate
@@ -249,7 +247,7 @@ Item {
                 id: wrapper
                 width: 80
                 height: 80
-                color: Activity.dataArray[index].color
+                color: dataArray[index].color
                 Text {
                     id: contactInfo
                     text: "oiu"

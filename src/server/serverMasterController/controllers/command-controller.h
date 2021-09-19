@@ -18,7 +18,6 @@ namespace controllers {
         Q_OBJECT
         Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_createClientViewContextCommands READ ui_createClientViewContextCommands CONSTANT)
         Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_findClientViewContextCommands READ ui_findClientViewContextCommands CONSTANT)
-        Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_editClientViewContextCommands READ ui_editClientViewContextCommands CONSTANT)
         Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_managePupilsViewContextCommands READ ui_managePupilsViewContextCommands CONSTANT)
 
     public:
@@ -27,14 +26,9 @@ namespace controllers {
 
         QQmlListProperty<framework::Command> ui_createClientViewContextCommands();
         QQmlListProperty<framework::Command> ui_findClientViewContextCommands();
-        QQmlListProperty<framework::Command> ui_editClientViewContextCommands();
         QQmlListProperty<framework::Command> ui_managePupilsViewContextCommands();
 
     public slots:
-        void setSelectedClient(cm::models::Client *client);
-        void onCreateClientSaveExecuted();
-        void onEditClientSaveExecuted();
-        void onEditClientDeleteExecuted();
         void onManagePupilsAddPupilExecuted();
         void onManagePupilsAddPupilsFromListExecuted();
         void onManagePupilsRemovePupilsExecuted();

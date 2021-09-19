@@ -15,8 +15,6 @@ import QtQuick.Controls 2.3
 
 import "../components"
 
-import "../server.js" as Activity
-
 Item {
     id: pupilsNavigationBarItem
     property bool isCollapsed: true

@@ -11,7 +11,6 @@ import QtQuick 2.9
 import "../../core"
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import "../server.js" as Activity
 
 Popup {
     id: removePupilsToGroupsDialog
