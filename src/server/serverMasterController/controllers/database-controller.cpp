@@ -21,7 +21,6 @@
     "CREATE TABLE IF NOT EXISTS activity_data(user_name TEXT NOT NULL, activity_name TEXT NOT NULL, " \
     "date TEXT NOT NULL,data TEXT NOT NULL,PRIMARY KEY(user_name,activity_name,date))"
 
-namespace cm {
 namespace controllers {
 
     class DatabaseController::Implementation
@@ -475,5 +474,4 @@ namespace controllers {
 
         return query.numRowsAffected() > 0;
     }
-}
 }

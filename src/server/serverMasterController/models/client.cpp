@@ -1,8 +1,7 @@
 #include "client.h"
 
-using namespace cm::data;
+using namespace data;
 
-namespace cm {
 namespace models {
 
     Client::Client(QObject *parent) :
@@ -28,5 +27,4 @@ namespace models {
         return QQmlListProperty<Contact>(this, contacts->derivedEntities());
     }
 
-}
 }

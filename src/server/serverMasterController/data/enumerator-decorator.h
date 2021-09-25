@@ -11,7 +11,6 @@
 #include <cm-lib_global.h>
 #include <data/data-decorator.h>
 
-namespace cm {
 namespace data {
 
 class CMLIBSHARED_EXPORT EnumeratorDecorator : public DataDecorator
@@ -39,6 +38,6 @@ private:
 	QScopedPointer<Implementation> implementation;
 };
 
-}}
+}
 
 #endif

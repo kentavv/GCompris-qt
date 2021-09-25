@@ -8,7 +8,6 @@
 
 #include <cm-lib_global.h>
 
-namespace cm {
 namespace data {
 
     class Entity;
@@ -34,7 +33,6 @@ namespace data {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

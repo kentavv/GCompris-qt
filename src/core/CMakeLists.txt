@@ -83,6 +83,14 @@ elseif(CMAKE_HOST_APPLE)
   set_source_files_properties(${gcompris_RES} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+if(BUILD_SERVER)
+  include_directories(${Protobuf_INCLUDE_DIRS})
+  include_directories(${CMAKE_CURRENT_BINARY_DIR})
+  protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS gcompris.proto)
+  set_property(SOURCE ${PROTO_SRCS} ${PROTO_HDRS} PROPERTY SKIP_AUTOMOC ON)
+  list(APPEND gcompris_SRCS ${PROTO_SRCS} ${PROTO_HDRS})
+endif()
+
 set(used_qt_modules Qt5::Qml Qt5::Quick Qt5::Gui Qt5::Multimedia Qt5::Core Qt5::Svg Qt5::Xml Qt5::XmlPatterns Qt5::Sensors)
 
 if(ANDROID)
@@ -103,6 +111,11 @@ add_library(gcompris_core SHARED ${gcompris_SRCS})
 target_link_libraries(gcompris_core ${used_qt_modules})
 
 target_link_libraries(${GCOMPRIS_EXECUTABLE_NAME} ${used_qt_modules})
+
+if(BUILD_SERVER)
+  target_link_libraries(gcompris_core ${Protobuf_LIBRARIES})
+  target_link_libraries(${GCOMPRIS_EXECUTABLE_NAME} ${Protobuf_LIBRARIES})
+endif()
 
 GCOMPRIS_ADD_RCC(core *.qml *.js resource/*.${COMPRESSED_AUDIO} resource/*.gif resource/*.png resource/*.svg resource/bonus/* resource/sounds/* resource/fonts/*.* resource/fonts/*/*.* qmldir COPYING)
 

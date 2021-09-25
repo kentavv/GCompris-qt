@@ -37,6 +37,8 @@ set(server_SRCS
   serverMasterController/controllers/command-controller.cpp
   serverMasterController/controllers/database-controller.h
   serverMasterController/controllers/database-controller.cpp
+  serverMasterController/controllers/network-controller.h
+  serverMasterController/controllers/network-controller.cpp
   serverMasterController/models/DatabaseElement.h
   serverMasterController/models/GroupData.cpp
   serverMasterController/models/GroupData.h
@@ -67,6 +69,8 @@ set(server_SRCS
    main.cpp
 )
 
+list(APPEND server_SRCS ${PROTO_SRCS} ${PROTO_HDRS})
+
 include_directories(
   ../core/  # messages
   "${CMAKE_CURRENT_BINARY_DIR}/../core"   # to find config.h
@@ -76,17 +80,18 @@ include_directories(
 set(used_qt_modules Qt5::Qml Qt5::Quick Qt5::Gui Qt5::Multimedia Qt5::Core Qt5::Svg Qt5::Xml Qt5::XmlPatterns Qt5::Sensors Qt5::QuickControls2 Qt5::Sql)
 
 if(ANDROID)
-  add_library(${GCOMPRIS_SERVER_EXECUTABLE_NAME} SHARED ${server_SRCS} ${server_MOC})
+  add_library(${GCOMPRIS_SERVER_EXECUTABLE_NAME} SHARED ${server_SRCS} ${server_MOC} ${PROTO_SRCS} ${PROTO_HDRS})
   set(used_qt_modules ${used_qt_modules} AndroidExtras)
 elseif(CMAKE_HOST_APPLE)
-  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} MACOSX_BUNDLE ${server_SRCS} ${server_MOC} ${gcompris_RES})
+  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} MACOSX_BUNDLE ${server_SRCS} ${server_MOC} ${gcompris_RES} ${PROTO_SRCS} ${PROTO_HDRS})
 elseif(CMAKE_HOST_WIN32)
-  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} WIN32 ${server_SRCS} ${server_MOC} ${gcompris_RES})
+  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} WIN32 ${server_SRCS} ${server_MOC} ${gcompris_RES} ${PROTO_SRCS} ${PROTO_HDRS})
 else()
-  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${server_SRCS} ${server_MOC} ${gcompris_RES})
+  add_executable(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${server_SRCS} ${server_MOC} ${gcompris_RES} ${PROTO_SRCS} ${PROTO_HDRS})
 endif()
 
 target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${used_qt_modules})
+target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${Protobuf_LIBRARIES})
 
 target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} gcompris_core)
 

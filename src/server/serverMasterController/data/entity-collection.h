@@ -7,7 +7,6 @@
 
 #include <cm-lib_global.h>
 
-namespace cm {
 namespace data {
 
     class Entity;
@@ -124,7 +123,6 @@ namespace data {
         return dynamic_cast<const EntityCollection<T> &>(*this).addEntity(entity);
     }
 
-}
 }
 
 #endif

@@ -10,7 +10,6 @@
 #include <cm-lib_global.h>
 #include <data/data-decorator.h>
 
-namespace cm {
 namespace data {
 
     class CMLIBSHARED_EXPORT StringDecorator : public DataDecorator
@@ -36,7 +35,6 @@ namespace data {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

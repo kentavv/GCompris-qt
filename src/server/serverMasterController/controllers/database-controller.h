@@ -10,7 +10,6 @@
 class GroupData;
 class UserData;
 
-namespace cm {
 namespace controllers {
 
     class CMLIBSHARED_EXPORT DatabaseController : public QObject
@@ -46,7 +45,6 @@ namespace controllers {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

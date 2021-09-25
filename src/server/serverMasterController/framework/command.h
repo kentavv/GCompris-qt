@@ -9,7 +9,6 @@
 
 #include <cm-lib_global.h>
 
-namespace cm {
 namespace framework {
 
     class CMLIBSHARED_EXPORT Command : public QObject
@@ -40,7 +39,6 @@ namespace framework {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

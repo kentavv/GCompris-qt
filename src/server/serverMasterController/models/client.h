@@ -11,16 +11,15 @@
 #include <models/address.h>
 #include <models/contact.h>
 
-namespace cm {
 namespace models {
 
     class CMLIBSHARED_EXPORT Client : public data::Entity
     {
         Q_OBJECT
-        Q_PROPERTY(cm::data::StringDecorator *ui_reference MEMBER reference CONSTANT)
-        Q_PROPERTY(cm::data::StringDecorator *ui_name MEMBER name CONSTANT)
-        Q_PROPERTY(cm::models::Address *ui_supplyAddress MEMBER supplyAddress CONSTANT)
-        Q_PROPERTY(cm::models::Address *ui_billingAddress MEMBER billingAddress CONSTANT)
+        Q_PROPERTY(data::StringDecorator *ui_reference MEMBER reference CONSTANT)
+        Q_PROPERTY(data::StringDecorator *ui_name MEMBER name CONSTANT)
+        Q_PROPERTY(models::Address *ui_supplyAddress MEMBER supplyAddress CONSTANT)
+        Q_PROPERTY(models::Address *ui_billingAddress MEMBER billingAddress CONSTANT)
         Q_PROPERTY(QQmlListProperty<Contact> ui_contacts READ ui_contacts NOTIFY contactsChanged)
 
     public:
@@ -33,13 +32,12 @@ namespace models {
         Address *billingAddress { nullptr };
         data::EntityCollection<Contact> *contacts { nullptr };
 
-        QQmlListProperty<cm::models::Contact> ui_contacts();
+        QQmlListProperty<models::Contact> ui_contacts();
 
     signals:
         void contactsChanged();
     };
 
-}
 }
 
 #endif

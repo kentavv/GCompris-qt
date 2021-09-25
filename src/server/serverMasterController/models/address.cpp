@@ -1,8 +1,7 @@
 #include "address.h"
 
-using namespace cm::data;
+using namespace data;
 
-namespace cm {
 namespace models {
 
     Address::Address(QObject *parent) :
@@ -24,6 +23,4 @@ namespace models {
     {
         return building->value() + " " + street->value() + "\n" + city->value() + "\n" + postcode->value();
     }
-
-}
 }

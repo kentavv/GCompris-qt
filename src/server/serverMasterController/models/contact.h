@@ -8,14 +8,13 @@
 #include <data/string-decorator.h>
 #include <data/entity.h>
 
-namespace cm {
 namespace models {
 
     class CMLIBSHARED_EXPORT Contact : public data::Entity
     {
         Q_OBJECT
-        Q_PROPERTY(cm::data::EnumeratorDecorator *ui_contactType MEMBER contactType CONSTANT)
-        Q_PROPERTY(cm::data::StringDecorator *ui_address MEMBER address CONSTANT)
+        Q_PROPERTY(data::EnumeratorDecorator *ui_contactType MEMBER contactType CONSTANT)
+        Q_PROPERTY(data::StringDecorator *ui_address MEMBER address CONSTANT)
 
     public:
         enum eContactType {
@@ -34,7 +33,6 @@ namespace models {
         static std::map<int, QString> contactTypeMapper;
     };
 
-}
 }
 
 #endif

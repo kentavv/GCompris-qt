@@ -1,6 +1,5 @@
 #include "command.h"
 
-namespace cm {
 namespace framework {
 
     class Command::Implementation
@@ -41,5 +40,4 @@ namespace framework {
         return implementation->canExecute();
     }
 
-}
 }

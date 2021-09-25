@@ -2,7 +2,6 @@
 
 #include <QVariant>
 
-namespace cm {
 namespace data {
 
     class StringDecorator::Implementation
@@ -56,6 +55,4 @@ namespace data {
             setValue("");
         }
     }
-
-}
 }

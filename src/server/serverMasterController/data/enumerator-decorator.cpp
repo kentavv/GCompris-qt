@@ -2,7 +2,6 @@
 
 #include <QVariant>
 
-namespace cm {
 namespace data {
 
 class EnumeratorDecorator::Implementation
@@ -70,4 +69,4 @@ void EnumeratorDecorator::update(const QJsonObject& jsonObject)
 	}
 }
 
-}}
+}

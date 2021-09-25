@@ -13,17 +13,16 @@
 #include <models/GroupData.h>
 #include <models/UserData.h>
 
-namespace cm {
 namespace controllers {
 
     class CMLIBSHARED_EXPORT MasterController : public QObject
     {
         Q_OBJECT
 
-        Q_PROPERTY(cm::controllers::NavigationController *ui_navigationController READ navigationController CONSTANT)
-        Q_PROPERTY(cm::controllers::CommandController *ui_commandController READ commandController CONSTANT)
-        Q_PROPERTY(cm::controllers::DatabaseController *ui_databaseController READ databaseController CONSTANT)
-        Q_PROPERTY(cm::models::Client *ui_newClient READ newClient CONSTANT)
+        Q_PROPERTY(controllers::NavigationController *ui_navigationController READ navigationController CONSTANT)
+        Q_PROPERTY(controllers::CommandController *ui_commandController READ commandController CONSTANT)
+        Q_PROPERTY(controllers::DatabaseController *ui_databaseController READ databaseController CONSTANT)
+        Q_PROPERTY(models::Client *ui_newClient READ newClient CONSTANT)
         Q_PROPERTY(QQmlListProperty<GroupData> ui_groups READ ui_groups NOTIFY groupsChanged)
         Q_PROPERTY(QQmlListProperty<UserData> ui_users READ ui_users NOTIFY usersChanged)
         Q_PROPERTY(QStringList ui_groupsFiltered READ ui_groupsFiltered NOTIFY groupsFilteredChanged)
@@ -50,7 +49,7 @@ namespace controllers {
         void addGroupsToUser(const QString &userName, const QStringList &groupList);
         void removeGroupsToUser(const QString &userName, const QStringList &groupList);
 
-        void selectClient(cm::models::Client *client);
+        void selectClient(models::Client *client);
 
         void addGroupToFilter(const QString &groupName);
         void removeGroupToFilter(const QString &groupName);
@@ -66,7 +65,6 @@ namespace controllers {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

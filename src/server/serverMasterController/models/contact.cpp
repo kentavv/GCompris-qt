@@ -1,8 +1,7 @@
 #include "contact.h"
 
-using namespace cm::data;
+using namespace data;
 
-namespace cm {
 namespace models {
 
     std::map<int, QString> Contact::contactTypeMapper = std::map<int, QString> {
@@ -21,6 +20,4 @@ namespace models {
     {
         update(json);
     }
-
-}
 }

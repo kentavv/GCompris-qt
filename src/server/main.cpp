@@ -30,6 +30,7 @@
 #include <QQmlContext>
 
 #include "serverMasterController/controllers/master-controller.h"
+#include "serverMasterController/controllers/network-controller.h"
 #include "serverMasterController/controllers/command-controller.h"
 #include "serverMasterController/controllers/navigation-controller.h"
 #include <data/enumerator-decorator.h>
@@ -77,21 +78,24 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    cm::controllers::MasterController masterController;
+    controllers::MasterController masterController;
     engine.rootContext()->setContextProperty("masterController", &masterController);
+    controllers::NetworkController networkController;
+    engine.rootContext()->setContextProperty("networkController", &networkController);
     engine.load(QUrl("qrc:/gcompris/src/server/main.qml"));
 
-    qmlRegisterType<cm::controllers::MasterController>("CM", 1, 0, "MasterController");
-    qmlRegisterType<cm::controllers::NavigationController>("CM", 1, 0, "NavigationController");
-    qmlRegisterType<cm::controllers::CommandController>("CM", 1, 0, "CommandController");
-    qmlRegisterType<cm::framework::Command>("CM", 1, 0, "Command");
-    qmlRegisterType<cm::data::EnumeratorDecorator>("CM", 1, 0, "EnumeratorDecorator");
-    qmlRegisterType<cm::data::StringDecorator>("CM", 1, 0, "StringDecorator");
+    qmlRegisterType<controllers::MasterController>("CM", 1, 0, "MasterController");
+    qmlRegisterType<controllers::NetworkController>("CM", 1, 0, "NetworkController");
+    qmlRegisterType<controllers::NavigationController>("CM", 1, 0, "NavigationController");
+    qmlRegisterType<controllers::CommandController>("CM", 1, 0, "CommandController");
+    qmlRegisterType<framework::Command>("CM", 1, 0, "Command");
+    qmlRegisterType<data::EnumeratorDecorator>("CM", 1, 0, "EnumeratorDecorator");
+    qmlRegisterType<data::StringDecorator>("CM", 1, 0, "StringDecorator");
     qmlRegisterType<GroupData>("CM", 1, 0, "GroupData");
     qmlRegisterType<UserData>("CM", 1, 0, "UserData");
-    qmlRegisterType<cm::models::Address>("CM", 1, 0, "Address");
-    qmlRegisterType<cm::models::Client>("CM", 1, 0, "Client");
-    qmlRegisterType<cm::models::Contact>("CM", 1, 0, "Contact");
+    qmlRegisterType<models::Address>("CM", 1, 0, "Address");
+    qmlRegisterType<models::Client>("CM", 1, 0, "Client");
+    qmlRegisterType<models::Contact>("CM", 1, 0, "Contact");
 
     // add import path for shipped qml modules:
     engine.addImportPath(QStringLiteral("%1/../lib/qml")

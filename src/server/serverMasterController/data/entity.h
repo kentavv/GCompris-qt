@@ -11,7 +11,6 @@
 #include <data/string-decorator.h>
 #include <data/entity-collection.h>
 
-namespace cm {
 namespace data {
 
     class CMLIBSHARED_EXPORT Entity : public QObject
@@ -45,7 +44,6 @@ namespace data {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

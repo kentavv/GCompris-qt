@@ -3,7 +3,6 @@
 #include <QJsonArray>
 #include <QUuid>
 
-namespace cm {
 namespace data {
 
     class Entity::Implementation
@@ -136,5 +135,4 @@ namespace data {
         return returnValue;
     }
 
-}
 }

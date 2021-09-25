@@ -6,7 +6,6 @@
 #include <cm-lib_global.h>
 #include <models/client.h>
 
-namespace cm {
 namespace controllers {
 
     class CMLIBSHARED_EXPORT NavigationController : public QObject
@@ -21,6 +20,7 @@ namespace controllers {
         void goManagePupilsView();
         void goCreateClientView();
         void goDashboardView();
+        void goDevicesView();
         void goFindClientView();
         void goManageWorkPlanView();
         void goAddPupilsFromListDialog();
@@ -29,8 +29,6 @@ namespace controllers {
         void goAddPupilToGroupsDialog();
         void goRemovePupilToGroupsDialog();
     };
-
-}
 }
 
 #endif

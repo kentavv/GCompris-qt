@@ -2,9 +2,8 @@
 #include <algorithm>
 #include "master-controller.h"
 
-using namespace cm::models;
+using namespace models;
 
-namespace cm {
 namespace controllers {
 
     class MasterController::Implementation
@@ -343,5 +342,4 @@ namespace controllers {
     void MasterController::selectClient(Client *client)
     {
     }
-}
 }

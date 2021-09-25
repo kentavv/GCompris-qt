@@ -43,7 +43,7 @@ Item {
                 iconCharacter: "\uf1e6"
                 description: qsTr("Connecting devices")
                 hoverColour: "#dc8a00"
-                onNavigationButtonClicked: masterController.ui_navigationController.goDashboardView();
+                onNavigationButtonClicked: masterController.ui_navigationController.goDevicesView();
             }
             NavigationButton {
                 iconCharacter: "\uf681"

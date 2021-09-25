@@ -10,15 +10,14 @@
 #include <controllers/navigation-controller.h>
 #include <models/client.h>
 
-namespace cm {
 namespace controllers {
 
     class CMLIBSHARED_EXPORT CommandController : public QObject
     {
         Q_OBJECT
-        Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_createClientViewContextCommands READ ui_createClientViewContextCommands CONSTANT)
-        Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_findClientViewContextCommands READ ui_findClientViewContextCommands CONSTANT)
-        Q_PROPERTY(QQmlListProperty<cm::framework::Command> ui_managePupilsViewContextCommands READ ui_managePupilsViewContextCommands CONSTANT)
+        Q_PROPERTY(QQmlListProperty<framework::Command> ui_createClientViewContextCommands READ ui_createClientViewContextCommands CONSTANT)
+        Q_PROPERTY(QQmlListProperty<framework::Command> ui_findClientViewContextCommands READ ui_findClientViewContextCommands CONSTANT)
+        Q_PROPERTY(QQmlListProperty<framework::Command> ui_managePupilsViewContextCommands READ ui_managePupilsViewContextCommands CONSTANT)
 
     public:
         explicit CommandController(QObject *_parent = nullptr, DatabaseController *databaseController = nullptr, controllers::NavigationController *navigationController = nullptr, models::Client *newClient = nullptr);
@@ -40,7 +39,6 @@ namespace controllers {
         QScopedPointer<Implementation> implementation;
     };
 
-}
 }
 
 #endif

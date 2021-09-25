@@ -3,10 +3,9 @@
 #include <QList>
 #include <QDebug>
 
-using namespace cm::framework;
-using namespace cm::models;
+using namespace framework;
+using namespace models;
 
-namespace cm {
 namespace controllers {
 
     class CommandController::Implementation
@@ -106,5 +105,4 @@ namespace controllers {
     {
         implementation->navigationController->goRemovePupilsDialog();
     }
-}
 }

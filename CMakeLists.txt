@@ -130,6 +130,10 @@ if(ECM_FOUND)
     endif()
 endif()
 
+if(BUILD_SERVER)
+  find_package(Protobuf)
+endif(BUILD_SERVER)
+
 # Tell CMake to run moc when necessary:
 set(CMAKE_AUTOMOC ON)
 

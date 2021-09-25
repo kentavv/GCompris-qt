@@ -1,6 +1,5 @@
 #include "data-decorator.h"
 
-namespace cm {
 namespace data {
 
     class DataDecorator::Implementation
@@ -40,5 +39,4 @@ namespace data {
         return implementation->parentEntity;
     }
 
-}
 }
