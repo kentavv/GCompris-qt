@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QtQml/QQmlListProperty>
 
-#include <cm-lib_global.h>
 #include <framework/command.h>
 #include <controllers/database-controller.h>
 #include <controllers/navigation-controller.h>
@@ -12,7 +11,7 @@
 
 namespace controllers {
 
-class CMLIBSHARED_EXPORT CommandController : public QObject
+class CommandController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QQmlListProperty<framework::Command> ui_createClientViewContextCommands READ ui_createClientViewContextCommands CONSTANT)

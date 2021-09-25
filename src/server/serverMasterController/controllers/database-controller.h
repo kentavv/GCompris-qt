@@ -5,14 +5,12 @@
 #include <QScopedPointer>
 #include <QSqlQueryModel>
 
-#include <cm-lib_global.h>
-
 class GroupData;
 class UserData;
 
 namespace controllers {
 
-class CMLIBSHARED_EXPORT DatabaseController : public QObject
+class DatabaseController : public QObject
 {
     Q_OBJECT
 

@@ -3,14 +3,13 @@
 
 #include <QObject>
 
-#include <cm-lib_global.h>
 #include <data/enumerator-decorator.h>
 #include <data/string-decorator.h>
 #include <data/entity.h>
 
 namespace models {
 
-class CMLIBSHARED_EXPORT Contact : public data::Entity
+class Contact : public data::Entity
 {
     Q_OBJECT
     Q_PROPERTY(data::EnumeratorDecorator *ui_contactType MEMBER contactType CONSTANT)

@@ -3,13 +3,12 @@
 
 #include <QObject>
 
-#include <cm-lib_global.h>
 #include <data/string-decorator.h>
 #include <data/entity.h>
 
 namespace models {
 
-class CMLIBSHARED_EXPORT Address : public data::Entity
+class Address : public data::Entity
 {
     Q_OBJECT
     Q_PROPERTY(data::StringDecorator *ui_building MEMBER building CONSTANT)

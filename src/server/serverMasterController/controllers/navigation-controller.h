@@ -3,12 +3,11 @@
 
 #include <QObject>
 
-#include <cm-lib_global.h>
 #include <models/client.h>
 
 namespace controllers {
 
-class CMLIBSHARED_EXPORT NavigationController : public QObject
+class NavigationController : public QObject
 {
     Q_OBJECT
 

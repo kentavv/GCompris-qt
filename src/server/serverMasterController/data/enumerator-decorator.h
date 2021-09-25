@@ -8,12 +8,11 @@
 #include <QObject>
 #include <QScopedPointer>
 
-#include <cm-lib_global.h>
 #include <data/data-decorator.h>
 
 namespace data {
 
-class CMLIBSHARED_EXPORT EnumeratorDecorator : public DataDecorator
+class EnumeratorDecorator : public DataDecorator
 {
     Q_OBJECT
     Q_PROPERTY(int ui_value READ value WRITE setValue NOTIFY valueChanged)

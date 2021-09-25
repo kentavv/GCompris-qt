@@ -5,7 +5,6 @@
 #include <QScopedPointer>
 #include <QString>
 
-#include <cm-lib_global.h>
 #include <controllers/command-controller.h>
 #include <controllers/database-controller.h>
 #include <controllers/navigation-controller.h>
@@ -15,7 +14,7 @@
 
 namespace controllers {
 
-class CMLIBSHARED_EXPORT MasterController : public QObject
+class MasterController : public QObject
 {
     Q_OBJECT
 

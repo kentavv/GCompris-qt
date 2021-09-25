@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QtQml/QQmlListProperty>
 
-#include <cm-lib_global.h>
 #include <data/string-decorator.h>
 #include <data/entity.h>
 #include <data/entity-collection.h>
@@ -13,7 +12,7 @@
 
 namespace models {
 
-class CMLIBSHARED_EXPORT Client : public data::Entity
+class Client : public data::Entity
 {
     Q_OBJECT
     Q_PROPERTY(data::StringDecorator *ui_reference MEMBER reference CONSTANT)

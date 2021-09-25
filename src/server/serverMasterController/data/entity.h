@@ -6,14 +6,13 @@
 #include <QObject>
 #include <QScopedPointer>
 
-#include <cm-lib_global.h>
 #include <data/data-decorator.h>
 #include <data/string-decorator.h>
 #include <data/entity-collection.h>
 
 namespace data {
 
-class CMLIBSHARED_EXPORT Entity : public QObject
+class Entity : public QObject
 {
     Q_OBJECT
 

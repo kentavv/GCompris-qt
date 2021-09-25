@@ -7,11 +7,9 @@
 #include <QScopedPointer>
 #include <QString>
 
-#include <cm-lib_global.h>
-
 namespace framework {
 
-class CMLIBSHARED_EXPORT Command : public QObject
+class Command : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString ui_iconCharacter READ iconCharacter CONSTANT)

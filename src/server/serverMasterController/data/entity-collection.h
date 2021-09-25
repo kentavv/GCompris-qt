@@ -5,13 +5,11 @@
 #include <QJsonValue>
 #include <QObject>
 
-#include <cm-lib_global.h>
-
 namespace data {
 
 class Entity;
 
-class CMLIBSHARED_EXPORT EntityCollectionObject : public QObject
+class EntityCollectionObject : public QObject
 {
     Q_OBJECT
 

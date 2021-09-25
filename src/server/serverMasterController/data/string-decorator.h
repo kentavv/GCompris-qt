@@ -7,12 +7,11 @@
 #include <QScopedPointer>
 #include <QString>
 
-#include <cm-lib_global.h>
 #include <data/data-decorator.h>
 
 namespace data {
 
-class CMLIBSHARED_EXPORT StringDecorator : public DataDecorator
+class StringDecorator : public DataDecorator
 {
     Q_OBJECT
     Q_PROPERTY(QString ui_value READ value WRITE setValue NOTIFY valueChanged)
