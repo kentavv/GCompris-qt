@@ -8,27 +8,27 @@
 
 namespace controllers {
 
-    class CMLIBSHARED_EXPORT NavigationController : public QObject
-    {
-        Q_OBJECT
+class CMLIBSHARED_EXPORT NavigationController : public QObject
+{
+    Q_OBJECT
 
-    public:
-        explicit NavigationController(QObject *parent = nullptr) :
-            QObject(parent) { }
+public:
+    explicit NavigationController(QObject *parent = nullptr) :
+        QObject(parent) { }
 
-    signals:
-        void goManagePupilsView();
-        void goCreateClientView();
-        void goDashboardView();
-        void goDevicesView();
-        void goFindClientView();
-        void goManageWorkPlanView();
-        void goAddPupilsFromListDialog();
-        void goRemovePupilsDialog();
-        void goAddPupilDialog();
-        void goAddPupilToGroupsDialog();
-        void goRemovePupilToGroupsDialog();
-    };
+signals:
+    void goManagePupilsView();
+    void goCreateClientView();
+    void goDashboardView();
+    void goDevicesView();
+    void goFindClientView();
+    void goManageWorkPlanView();
+    void goAddPupilsFromListDialog();
+    void goRemovePupilsDialog();
+    void goAddPupilDialog();
+    void goAddPupilToGroupsDialog();
+    void goRemovePupilToGroupsDialog();
+};
 }
 
 #endif

@@ -42,7 +42,6 @@
 #include <models/client.h>
 #include <models/contact.h>
 
-
 #define GCOMPRIS_SERVER_APPLICATION_NAME "gcompris-server"
 
 int main(int argc, char *argv[])
@@ -71,9 +70,9 @@ int main(int argc, char *argv[])
     Database::init();
     MessageHandler::init();*/
 
-    if(!QResource::registerResource(ApplicationInfo::getFilePath("core.rcc")))
+    if (!QResource::registerResource(ApplicationInfo::getFilePath("core.rcc")))
         qDebug() << "Failed to load the resource file " << ApplicationInfo::getFilePath("core.rcc");
-    if(!QResource::registerResource(ApplicationInfo::getFilePath("server.rcc")))
+    if (!QResource::registerResource(ApplicationInfo::getFilePath("server.rcc")))
         qDebug() << "Failed to load the resource file " << ApplicationInfo::getFilePath("server.rcc");
 
     QQmlApplicationEngine engine;
@@ -99,7 +98,7 @@ int main(int argc, char *argv[])
 
     // add import path for shipped qml modules:
     engine.addImportPath(QStringLiteral("%1/../lib/qml")
-                         .arg(QCoreApplication::applicationDirPath()));
+                             .arg(QCoreApplication::applicationDirPath()));
 
     QObject *topLevel = engine.rootObjects().value(0);
 

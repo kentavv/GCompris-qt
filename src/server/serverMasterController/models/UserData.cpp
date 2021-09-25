@@ -14,7 +14,8 @@
 #include "GroupData.h"
 #include "UserData.h"
 
-UserData::UserData(const QString &name, const QString &dateOfBirth, const QString &password) : m_name(name), m_dateOfBirth(dateOfBirth), m_password(password)
+UserData::UserData(const QString &name, const QString &dateOfBirth, const QString &password) :
+    m_name(name), m_dateOfBirth(dateOfBirth), m_password(password)
 {
 }
 
@@ -62,35 +63,40 @@ const QString &UserData::getPassword() const
     return m_password;
 }
 
-bool UserData::hasGroup(GroupData *g) {
+bool UserData::hasGroup(GroupData *g)
+{
     return m_groups.indexOf(g) >= 0;
 }
 
-void UserData::addGroup(GroupData *g) {
+void UserData::addGroup(GroupData *g)
+{
     m_groups << g;
     emit newGroups();
 }
 
-void UserData::removeGroup(GroupData *g) {
+void UserData::removeGroup(GroupData *g)
+{
     m_groups.removeOne(g);
     emit newGroups();
 }
 
-void UserData::removeAllGroups() {
+void UserData::removeAllGroups()
+{
     m_groups.clear();
     emit newGroups();
 }
 
-const QList<GroupData *> UserData::getGroups() const {
+const QList<GroupData *> UserData::getGroups() const
+{
     return m_groups;
 }
 
-QString UserData::getGroupsAsString() const {
+QString UserData::getGroupsAsString() const
+{
     if (!m_groups.empty()) {
         QString ss;
         auto it = m_groups.cbegin();
-        while (true)
-        {
+        while (true) {
             ss += (*it)->getName();
             it++;
             if (it != m_groups.cend()) {
@@ -99,7 +105,7 @@ QString UserData::getGroupsAsString() const {
             else {
                 return ss;
             }
-        }       
+        }
     }
     return "";
 }

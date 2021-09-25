@@ -15,9 +15,8 @@
 
 namespace controllers {
 
-NetworkController::NetworkController(QObject *parent)
-    : QObject(parent)
-    , tcpServer(Q_NULLPTR)
+NetworkController::NetworkController(QObject *parent) :
+    QObject(parent), tcpServer(Q_NULLPTR)
 {
     udpSocket = new QUdpSocket(this);
     tcpServer = new QTcpServer(this);
@@ -43,7 +42,9 @@ void NetworkController::newTcpConnection()
     emit newClientReceived(clientConnection);
 }
 
-template<class T> qint32 encodeMessage(const network::Type &messageType, T &message, std::string &encodedContainer) {
+template <class T>
+qint32 encodeMessage(const network::Type &messageType, T &message, std::string &encodedContainer)
+{
     network::Container container;
     container.set_type(messageType);
     container.mutable_data()->PackFrom(message);
@@ -64,12 +65,12 @@ void NetworkController::broadcastDatagram()
 
 void NetworkController::slotReadyRead()
 {
-    QTcpSocket* clientConnection = qobject_cast<QTcpSocket*>(sender());
+    QTcpSocket *clientConnection = qobject_cast<QTcpSocket *>(sender());
     QByteArray &data = buffers[clientConnection];
     data += clientConnection->readAll();
 
-    while(data.size() > 0) {
-        if(data.size() < sizeof(qint32)) {
+    while (data.size() > 0) {
+        if (data.size() < sizeof(qint32)) {
             qDebug() << "not enough data to read";
             return;
         }
@@ -78,14 +79,14 @@ void NetworkController::slotReadyRead()
         ds >> messageSize;
         messageSize = qFromBigEndian(messageSize);
         qDebug() << "Message Received of size" << messageSize << data;
-        if(data.size() < messageSize) {
+        if (data.size() < messageSize) {
             qDebug() << "Message is not fully sent";
             return;
         }
         network::Container container;
-        container.ParseFromArray(data.constData()+sizeof(qint32), messageSize);
+        container.ParseFromArray(data.constData() + sizeof(qint32), messageSize);
         qDebug() << container.type();
-        switch(container.type()) {
+        switch (container.type()) {
         case network::Type::CLIENT_ACCEPTED:
             network::ClientAccepted client;
             container.data().UnpackTo(&client);
@@ -99,8 +100,8 @@ void NetworkController::slotReadyRead()
 
 void NetworkController::disconnected()
 {
-    QTcpSocket* clientConnection = qobject_cast<QTcpSocket*>(sender());
-    if(!clientConnection)
+    QTcpSocket *clientConnection = qobject_cast<QTcpSocket *>(sender());
+    if (!clientConnection)
         return;
     qDebug() << "Removing " << clientConnection;
     list.removeAll(clientConnection);
@@ -113,7 +114,7 @@ void NetworkController::sendLoginList(/*groupName, or userList to filter from?*/
     // Get all the clients
     // For each client, if it does not have a name yet, send the message
     network::LoginList loginList;
-    for(std::string name: {"Bryan", "Pete"}) {
+    for (std::string name: { "Bryan", "Pete" }) {
         std::string *login = loginList.add_login();
         *login = name;
     }
@@ -121,25 +122,24 @@ void NetworkController::sendLoginList(/*groupName, or userList to filter from?*/
 
     qint32 encodedContainerSize = encodeMessage(network::Type::LOGIN_LIST, loginList, encodedContainer);
 
-    for(QTcpSocket *sock: list) {
+    for (QTcpSocket *sock: list) {
         qDebug() << "Sending " << encodedContainer.c_str() << " to " << sock;
         sock->write(reinterpret_cast<const char *>(&encodedContainerSize), sizeof(qint32));
         sock->write(encodedContainer.c_str(), encodedContainer.size());
     }
-// remove the sockets not the names
-//    QStringList usedLogins;
-//    for(const QObject* oClient: MessageHandler::getInstance()->returnClients()) {
-//        ClientData* c = (ClientData*)(oClient);
-//        if(c->getUserData()){
-//            usedLogins << c->getUserData()->getName();
-//        }
-//    }
+    // remove the sockets not the names
+    //    QStringList usedLogins;
+    //    for(const QObject* oClient: MessageHandler::getInstance()->returnClients()) {
+    //        ClientData* c = (ClientData*)(oClient);
+    //        if(c->getUserData()){
+    //            usedLogins << c->getUserData()->getName();
+    //        }
+    //    }
 
     // AvailableLogins act;
     // for(const QObject *oC: MessageHandler::getInstance()->returnUsers()) {
     //         act._logins << ((const UserData*)oC)->getName();
     //         act._passwords << ((const UserData*)oC)->getPassword();
     // }
-
 }
 }

@@ -18,7 +18,7 @@ class QUdpSocket;
 #include <QJSEngine>
 
 namespace controllers {
-    /**
+/**
      * @class NetworkController
      * @short Receive and send messages to the gcompris client instances
      *
@@ -35,33 +35,33 @@ namespace controllers {
      *
      * @sa MessageHandler
      */
-    class NetworkController : public QObject
-    {
-        Q_OBJECT
+class NetworkController : public QObject
+{
+    Q_OBJECT
 
-    public:
-        explicit NetworkController(QObject *parent = nullptr);
+public:
+    explicit NetworkController(QObject *parent = nullptr);
 
-        Q_INVOKABLE void broadcastDatagram();
-        Q_INVOKABLE void sendLoginList();
+    Q_INVOKABLE void broadcastDatagram();
+    Q_INVOKABLE void sendLoginList();
 
-    private slots:
-        void newTcpConnection();
-        void slotReadyRead();
-        void disconnected();
+private slots:
+    void newTcpConnection();
+    void slotReadyRead();
+    void disconnected();
 
-    private:
-        QTcpServer *tcpServer;
-        QList<QTcpSocket*> list;
-        QUdpSocket *udpSocket;
+private:
+    QTcpServer *tcpServer;
+    QList<QTcpSocket *> list;
+    QUdpSocket *udpSocket;
 
-        std::map<QTcpSocket*, QByteArray> buffers;
-    signals:
-        void newClientReceived(QTcpSocket* socket);
-        void clientDisconnected(QTcpSocket* socket);
-        // void loginReceived(QTcpSocket* socket, const Login &log);
-        // void activityDataReceived(QTcpSocket* socket, const ActivityRawData &data);
-    };
+    std::map<QTcpSocket *, QByteArray> buffers;
+signals:
+    void newClientReceived(QTcpSocket *socket);
+    void clientDisconnected(QTcpSocket *socket);
+    // void loginReceived(QTcpSocket* socket, const Login &log);
+    // void activityDataReceived(QTcpSocket* socket, const ActivityRawData &data);
+};
 }
 
 #endif

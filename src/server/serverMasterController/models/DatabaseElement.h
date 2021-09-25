@@ -19,17 +19,19 @@
  * A DatabaseElement contains an unique identifier
  *
  */
-class DatabaseElement : public QObject {
+class DatabaseElement : public QObject
+{
     Q_OBJECT
 
     Q_PROPERTY(int primaryKey MEMBER m_primaryKey)
 
 public:
-    DatabaseElement(int primaryKey = 0) : m_primaryKey(primaryKey) {};
+    DatabaseElement(int primaryKey = 0) :
+        m_primaryKey(primaryKey) {};
     ~DatabaseElement() = default;
 
-    const int &getPrimaryKey() const {return m_primaryKey;};
-    void setPrimaryKey(int key) { m_primaryKey = key;};
+    const int &getPrimaryKey() const { return m_primaryKey; };
+    void setPrimaryKey(int key) { m_primaryKey = key; };
 
 private:
     int m_primaryKey;

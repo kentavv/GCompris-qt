@@ -23,7 +23,8 @@ class GroupData;
  * A user has a name, a date of birth, a password
  *
  */
-class UserData : public DatabaseElement {
+class UserData : public DatabaseElement
+{
     Q_OBJECT
 
     Q_PROPERTY(QString password MEMBER m_password NOTIFY newPassword)

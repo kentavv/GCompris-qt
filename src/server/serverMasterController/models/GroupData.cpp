@@ -19,8 +19,8 @@ GroupData::GroupData()
 
 GroupData::GroupData(const GroupData &group)
 {
-        m_users = group.m_users;
-        m_name = group.m_name;
+    m_users = group.m_users;
+    m_name = group.m_name;
 }
 
 GroupData::~GroupData()

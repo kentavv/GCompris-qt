@@ -24,7 +24,8 @@ class UserData;
  *
  * @sa UserData
  */
-class GroupData : public DatabaseElement {
+class GroupData : public DatabaseElement
+{
     Q_OBJECT
 
     Q_PROPERTY(QList<QObject *> users MEMBER m_users NOTIFY newUsers)
@@ -44,6 +45,7 @@ public:
     const QString &getName() const;
     void setName(const QString &newName);
     void setDescription(const QString &description);
+
 private:
     // UserData*
     QList<QObject *> m_users;
