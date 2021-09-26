@@ -37,7 +37,7 @@ The second time git will correctly download the required files.
 This bug needs to be investigated
 
 Usage:
-python pdfBuild.py --wikiurl https://invent.kde.org/education/gcompris.wiki.git --outputFilename myGCSpecificationFile.pdflaxtex
+python pdfBuild.py --wikiurl https://invent.kde.org/education/gcompris.wiki.git --outputFilename myGCSpecificationFile.pdflatex
 
 additional options to save build time:
 --doNotDownloadWiki (to use the wiki file already downloaded locally)
