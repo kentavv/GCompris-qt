@@ -10,6 +10,7 @@
 #include <QString>
 #include <QTcpSocket>
 #include <QUdpSocket>
+#include "ApplicationSettings.h"
 #include "ClientNetworkMessages.h"
 #include "gcompris.pb.h"
 
@@ -19,9 +20,9 @@ ClientNetworkMessages::ClientNetworkMessages(): QObject(),
                                                 _connected(false)
 {
     if(!udpSocket->bind(5678, QUdpSocket::ShareAddress))
-         qDebug("could not bind");
+         qDebug() <<"could not bind to UdpSocket";
      else
-         qDebug("success");
+         qDebug() << "Connected to UdpSocket";
 
     connect(udpSocket, &QUdpSocket::readyRead, this, &ClientNetworkMessages::udpRead);
     connect(tcpSocket, &QTcpSocket::connected, this, &ClientNetworkMessages::connected);
@@ -103,21 +104,40 @@ void ClientNetworkMessages::udpRead() {
             network::ScanClients client;
             container.data().UnpackTo(&client);
             qDebug() << "Scan deviceId" << client.deviceid().c_str() << address.toString();
-            //emit newClient();
-            connectToServer(address.toString());
+            QString requestDeviceId = client.deviceid().c_str();
+            if(!_connected && (requestDeviceId.isEmpty() || ApplicationSettings::getInstance()->deviceId() == requestDeviceId)) {
+                emit requestConnection(requestDeviceId, address.toString());
+            }
             break;
         }
         data = data.mid(messageSize + sizeof(qint32)); // Message handled, remove it from the queue
     }
 }
 
-bool ClientNetworkMessages::sendMessage(const QByteArray &message)
+template <class T>
+qint32 encodeMessage(const network::Type &messageType, T &message, std::string &encodedContainer)
 {
-    int size = 0;
-    if(tcpSocket->state() == QAbstractSocket::ConnectedState) {
-        size = tcpSocket->write(message);
-    }
-    return size != 0;
+    network::Container container;
+    container.set_type(messageType);
+    container.mutable_data()->PackFrom(message);
+    encodedContainer = container.SerializeAsString();
+    return qToBigEndian(qint32(encodedContainer.size()));
+}
+
+void ClientNetworkMessages::sendLoginMessage(const QString &newLogin, const QString& password)
+{
+    // store the username in config
+    //ApplicationSettings::getInstance()->setUserName(newLogin);
+
+    // Send Login message
+    network::LoginRequest request;
+    request.set_login(newLogin.toStdString());
+    request.set_password(password.toStdString());
+    std::string encodedContainer;
+
+    qint32 encodedContainerSize = encodeMessage(network::Type::LOGIN_REQUEST, request, encodedContainer);
+    tcpSocket->write(reinterpret_cast<const char *>(&encodedContainerSize), sizeof(qint32));
+    tcpSocket->write(encodedContainer.c_str(), encodedContainer.size());
 }
 
 void ClientNetworkMessages::readFromSocket()
@@ -146,10 +166,12 @@ void ClientNetworkMessages::readFromSocket()
         case network::Type::LOGIN_LIST:
             network::LoginList loginList;
             container.data().UnpackTo(&loginList);
+            QStringList logins;
             for (const std::string &name: loginList.login()) {
                 qDebug() << "available login:" << name.c_str();
+                logins << name.c_str();
             }
-            //emit newClient();
+            emit loginListReceived(logins);
             break;
         }
         tcpBuffer = tcpBuffer.mid(messageSize + sizeof(qint32)); // Message handled, remove it from the queue

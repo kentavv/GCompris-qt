@@ -322,6 +322,131 @@ Window {
         id: loading
     }
 
+    Connections {
+        id: connection
+        target: clientNetworkMessages
+
+        property string requestDeviceId
+        property string serverIp
+        property bool requestAlreadyInProgress: false
+        onRequestConnection: {
+            if(requestAlreadyInProgress) {
+                return;
+            }
+            requestAlreadyInProgress = true;
+            connection.requestDeviceId = requestDeviceId;
+            connection.serverIp = serverIp;
+            Core.showMessageDialog(main,
+                    qsTr("Do you want to connect to server %1?").arg(connection.requestDeviceId),
+                    qsTr("Yes"), function() {
+                        clientNetworkMessages.connectToServer(connection.serverIp);
+                        requestAlreadyInProgress = false;
+                    },
+                    qsTr("No"), function() {
+                        requestAlreadyInProgress = false;
+                    },
+                    null);
+        }
+        onLoginListReceived: {
+            chooseLogin.model = logins;
+            chooseLogin.visible = true
+            chooseLogin.start()
+        }
+    }
+    GCInputDialog {
+        id: chooseLogin
+        visible: false
+        active: visible
+        anchors.fill: parent
+
+        message: qsTr("Select your login")
+        onClose: chooseLogin.visible = false;
+
+        button1Text: qsTr("OK")
+        button2Text: qsTr("Cancel")
+        onButton1Hit: {
+            choosePassword.visible = true
+            choosePassword.start()
+        }
+        focus: true
+
+        property string chosenLogin
+        property var model
+        content: ListView {
+            id: view
+            width: chooseLogin.width
+            height: 100 * ApplicationInfo.ratio
+            contentHeight: 60 * ApplicationInfo.ratio * model.count
+            interactive: true
+            clip: true
+            model: chooseLogin.model
+            delegate: GCDialogCheckBox {
+                id: userBox
+                text: modelData
+                checked: false
+                exclusiveGroup: exclusiveGroupItem
+                Component.onCompleted: {
+                    if (exclusiveGroup)
+                        exclusiveGroup.bindCheckable(userBox)
+                }
+                Component.onDestruction: {
+                    if (exclusiveGroup)
+                        exclusiveGroup.unbindCheckable(userBox)
+                }
+            }
+        }
+        ExclusiveGroup {
+            id: exclusiveGroupItem
+            onCurrentChanged: { if(current) chooseLogin.chosenLogin = current.text; }
+        }
+    }
+    GCInputDialog {
+        id: choosePassword
+        visible: false
+        active: visible
+        anchors.fill: parent
+
+        message: qsTr("Select your password")
+        onClose: {
+            chosenPassword = "";
+            choosePassword.visible = false;
+        }
+
+        button1Text: qsTr("OK")
+        button2Text: qsTr("Cancel")
+        onButton1Hit: {
+            console.log("selected password:", chosenPassword)
+            console.log("selected user name:", chooseLogin.chosenLogin)
+            clientNetworkMessages.sendLoginMessage(chooseLogin.chosenLogin, chosenPassword)
+        }
+        focus: true
+
+        property string chosenPassword
+        content: GridView {
+            id: view
+            width: choosePassword.width - 60
+            height: 100 * ApplicationInfo.ratio
+            contentHeight: height
+
+            interactive: true
+            clip: true
+            model: Core.shuffle(["1", "2", "3", "4", "5", "6"])
+            delegate: Image {
+                id: userBox
+                source: "qrc:/gcompris/src/core/resource/difficulty" + modelData + ".svg"
+                sourceSize.width: 30
+                sourceSize.height: 30
+                
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        choosePassword.chosenPassword = choosePassword.chosenPassword + modelData
+                    }
+                }
+            }
+        }
+    }
+
     StackView {
         id: pageView
         anchors.fill: parent

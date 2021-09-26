@@ -293,12 +293,13 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    QQmlApplicationEngine engine(QUrl("qrc:/gcompris/src/core/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::quit, DownloadManager::getInstance(),
-                     &DownloadManager::shutdown);
 
+    QQmlApplicationEngine engine;
     ClientNetworkMessages clientNetworkMessages;
     engine.rootContext()->setContextProperty("clientNetworkMessages", &clientNetworkMessages);
+    engine.load(QUrl("qrc:/gcompris/src/core/main.qml"));
+    QObject::connect(&engine, &QQmlApplicationEngine::quit, DownloadManager::getInstance(),
+                     &DownloadManager::shutdown);
 
     // add import path for shipped qml modules:
 #ifdef SAILFISHOS

@@ -32,8 +32,8 @@ signals:
     void portChanged();
     void connectionStatus();
 
-    void loginListReceived(const QStringList& logins, const QStringList& passwords);
-    void requestConnection(const QString& serverName);
+    void loginListReceived(const QStringList& logins);
+    void requestConnection(const QString& requestDeviceId, const QString& serverIp);
 
 private:
     QString _host;
@@ -42,11 +42,10 @@ private:
     
 public:
 
-    bool sendMessage(const QByteArray &message);
-
     virtual ~ClientNetworkMessages();
     Q_INVOKABLE void connectToServer(const QString& serverName);
     Q_INVOKABLE void disconnectFromServer();
+    Q_INVOKABLE void sendLoginMessage(const QString &login, const QString& password);
 
     QString host() const{
         return _host;

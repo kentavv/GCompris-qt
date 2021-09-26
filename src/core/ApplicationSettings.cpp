@@ -32,6 +32,7 @@ static const char *ADMIN_GROUP_KEY = "Admin";
 static const char *INTERNAL_GROUP_KEY = "Internal";
 static const char *FAVORITE_GROUP_KEY = "Favorite";
 static const char *LEVELS_GROUP_KEY = "Levels";
+static const char *SERVER_GROUP_KEY = "Server";
 
 static const char *FULLSCREEN_KEY = "fullscreen";
 static const char *PREVIOUS_HEIGHT_KEY = "previousHeight";
@@ -52,6 +53,8 @@ static const char *DOWNLOAD_SERVER_URL_KEY = "downloadServerUrl";
 static const char *CACHE_PATH_KEY = "cachePath";
 static const char *USERDATA_PATH_KEY = "userDataPath";
 static const char *RENDERER_KEY = "renderer";
+
+static const char *DEVICE_ID_KEY = "deviceId";
 
 static const char *EXE_COUNT_KEY = "exeCount";
 static const char *LAST_GC_VERSION_RAN = "lastGCVersionRan";
@@ -143,6 +146,11 @@ ApplicationSettings::ApplicationSettings(const QString &configPath, QObject *par
     m_renderer = m_config.value(RENDERER_KEY, GRAPHICAL_RENDERER).toString();
     m_config.endGroup();
 
+    // server group
+    m_config.beginGroup(SERVER_GROUP_KEY);
+    m_deviceId = m_config.value(DEVICE_ID_KEY, "").toString();
+    m_config.endGroup();
+
     // internal group
     m_config.beginGroup(INTERNAL_GROUP_KEY);
     m_exeCount = m_config.value(EXE_COUNT_KEY, 0).toUInt();
@@ -176,6 +184,7 @@ ApplicationSettings::ApplicationSettings(const QString &configPath, QObject *par
     connect(this, &ApplicationSettings::exeCountChanged, this, &ApplicationSettings::notifyExeCountChanged);
     connect(this, &ApplicationSettings::barHiddenChanged, this, &ApplicationSettings::notifyBarHiddenChanged);
     connect(this, &ApplicationSettings::lastGCVersionRanChanged, this, &ApplicationSettings::notifyLastGCVersionRanChanged);
+    connect(this, &ApplicationSettings::deviceIdChanged, this, &ApplicationSettings::notifyDeviceIdChanged);
     connect(this, &ApplicationSettings::backgroundMusicVolumeChanged, this, &ApplicationSettings::notifyBackgroundMusicVolumeChanged);
     connect(this, &ApplicationSettings::audioEffectsVolumeChanged, this, &ApplicationSettings::notifyAudioEffectsVolumeChanged);
 }
@@ -217,6 +226,11 @@ ApplicationSettings::~ApplicationSettings()
     m_config.setValue(CACHE_PATH_KEY, m_cachePath);
     m_config.setValue(USERDATA_PATH_KEY, m_userDataPath);
     m_config.setValue(RENDERER_KEY, m_renderer);
+    m_config.endGroup();
+
+    // server group
+    m_config.beginGroup(SERVER_GROUP_KEY);
+    m_config.setValue(DEVICE_ID_KEY, m_deviceId);
     m_config.endGroup();
 
     // internal group
@@ -383,6 +397,12 @@ void ApplicationSettings::notifyDownloadServerUrlChanged()
 {
     updateValueInConfig(ADMIN_GROUP_KEY, DOWNLOAD_SERVER_URL_KEY, m_downloadServerUrl);
     qDebug() << "downloadServerUrl set to: " << m_downloadServerUrl;
+}
+
+void ApplicationSettings::notifyDeviceIdChanged()
+{
+    updateValueInConfig(SERVER_GROUP_KEY, DEVICE_ID_KEY, m_deviceId);
+    qDebug() << "deviceId set to: " << m_deviceId;
 }
 
 void ApplicationSettings::notifyCachePathChanged()

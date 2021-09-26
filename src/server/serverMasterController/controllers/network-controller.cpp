@@ -78,21 +78,27 @@ void NetworkController::slotReadyRead()
         QDataStream ds(data);
         qint32 messageSize;
         ds >> messageSize;
-        messageSize = qFromBigEndian(messageSize);
         qDebug() << "Message Received of size" << messageSize << data;
         if (data.size() < messageSize) {
-            qDebug() << "Message is not fully sent";
+            qDebug() << "Message is not fully sent. Buffer size:" << data.size() << ", message size:" << messageSize;
             return;
         }
         network::Container container;
         container.ParseFromArray(data.constData() + sizeof(qint32), messageSize);
         qDebug() << container.type();
         switch (container.type()) {
-        case network::Type::CLIENT_ACCEPTED:
+        case network::Type::CLIENT_ACCEPTED: {
             network::ClientAccepted client;
             container.data().UnpackTo(&client);
             //emit newClient();
             break;
+        }
+        case network::Type::LOGIN_REQUEST: {
+            network::LoginRequest login;
+            container.data().UnpackTo(&login);
+            qDebug() << "Request from" << login.login().c_str() << "with password" << login.password().c_str();
+            break;
+        }
         }
         data = data.mid(messageSize + sizeof(qint32)); // Message handled, remove it from the queue
     }
@@ -110,14 +116,14 @@ void NetworkController::disconnected()
     clientConnection->deleteLater();
 }
 
-void NetworkController::sendLoginList(/*groupName, or userList to filter from?*/)
+void NetworkController::sendLoginList(const QStringList &selectedUsers)
 {
     // Get all the clients
     // For each client, if it does not have a name yet, send the message
     network::LoginList loginList;
-    for (std::string name: { "Bryan", "Pete" }) {
+    for (const QString &name: selectedUsers) {
         std::string *login = loginList.add_login();
-        *login = name;
+        *login = name.toStdString();
     }
     std::string encodedContainer;
 

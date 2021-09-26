@@ -481,6 +481,28 @@ Item {
                 }
             }
         }
+
+        Flow {
+            GCText {
+                id: deviceIdLabel
+                text: qsTr("Device identifier")
+                fontSize: mediumSize
+                width: dialogConfig.contentWidth / 2
+                wrapMode: Text.WordWrap
+            }
+            TextInput {
+                id: deviceIdInput
+                height: deviceIdLabel.height
+                width: dialogConfig.contentWidth / 2
+
+                Rectangle {
+                    color: "transparent"
+                    anchors.fill: parent
+                    border.color: "red"
+                    border.width: 2
+                }
+            }
+        }
     }
 
     property bool isAudioVoicesEnabled: ApplicationSettings.isAudioVoicesEnabled
@@ -499,6 +521,7 @@ Item {
     // or we get a binding loop warning
     property real backgroundMusicVolume
     property real audioEffectsVolume
+    property alias deviceId: deviceIdInput.text
 
     function extractMusicNameFromPath(musicPath) {
         var musicDirectoryPath = ApplicationInfo.getAudioFilePath("backgroundMusic/")
@@ -534,6 +557,8 @@ Item {
         sectionVisibleBox.checked = sectionVisible
 
         wordset = useWordset ? ApplicationSettings.wordset : ""
+
+        deviceId = ApplicationSettings.deviceId
 
         baseFontSize = ApplicationSettings.baseFontSize
         fontLetterSpacing = ApplicationSettings.fontLetterSpacing
@@ -582,6 +607,9 @@ Item {
         ApplicationSettings.isEmbeddedFont = fonts.get(fontBox.currentIndex).isLocalResource;
         ApplicationSettings.font = fonts.get(fontBox.currentIndex).text
         ApplicationSettings.fontCapitalization = fontCapitalizationModel[fontCapitalizationBox.currentIndex].value
+
+        deviceIdInput.accepted()
+        ApplicationSettings.deviceId = deviceId
 
         if(ApplicationSettings.filterLevelMin !== filterRepeater.minFilter ||
            ApplicationSettings.filterLevelMax !== filterRepeater.maxFilter) {

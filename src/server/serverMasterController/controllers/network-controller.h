@@ -43,7 +43,7 @@ public:
     explicit NetworkController(QObject *parent = nullptr);
 
     Q_INVOKABLE void broadcastDatagram(const QString &broadcastIp, const QString &deviceId);
-    Q_INVOKABLE void sendLoginList();
+    Q_INVOKABLE void sendLoginList(const QStringList &selectedUsers);
 
 private slots:
     void newTcpConnection();
