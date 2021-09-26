@@ -52,15 +52,15 @@ qint32 encodeMessage(const network::Type &messageType, T &message, std::string &
     return qToBigEndian(qint32(encodedContainer.size()));
 }
 
-void NetworkController::broadcastDatagram()
+void NetworkController::broadcastDatagram(const QString &broadcastIp)
 {
     network::ScanClients sendClients;
     sendClients.set_deviceid(QHostInfo::localHostName().toStdString());
     std::string encodedContainer;
 
     qint32 encodedContainerSize = encodeMessage(network::Type::SCAN_CLIENTS, sendClients, encodedContainer);
-    udpSocket->writeDatagram(reinterpret_cast<const char *>(&encodedContainerSize), sizeof(qint32), QHostAddress::Broadcast, 5678);
-    qint64 data = udpSocket->writeDatagram(encodedContainer.c_str(), encodedContainer.size(), QHostAddress::Broadcast, 5678);
+    udpSocket->writeDatagram(reinterpret_cast<const char *>(&encodedContainerSize), sizeof(qint32), QHostAddress(broadcastIp), 5678);
+    qint64 data = udpSocket->writeDatagram(encodedContainer.c_str(), encodedContainer.size(), QHostAddress(broadcastIp), 5678);
 }
 
 void NetworkController::slotReadyRead()

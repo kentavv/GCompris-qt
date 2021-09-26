@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import android.view.WindowManager;
 import java.text.Collator;
 import java.util.Locale;
+import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.MulticastLock;
 
 public class GComprisActivity extends QtActivity
 {
@@ -36,6 +38,16 @@ public class GComprisActivity extends QtActivity
     public GComprisActivity()
     {
         m_instance = this;
+    }
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        /* Allow broadcast */
+        WifiManager wifi = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        if (wifi != null) {
+            WifiManager.WifiLock lock = wifi.createWifiLock("gcompris");
+            lock.acquire();
+        }
     }
 
     public static boolean requestAudioFocus() {

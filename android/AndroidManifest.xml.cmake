@@ -35,6 +35,7 @@
 	<uses-sdk android:minSdkVersion="22" android:targetSdkVersion="29"/>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	@ANDROID_WIFI_BROADCAST_PERMISSION@
 	@ANDROID_INTERNET_PERMISSION@
 	@ANDROID_ACCESS_NETWORK_STATE_PERMISSION@
 </manifest>

@@ -25,6 +25,8 @@
 #include "ActivityInfoTree.h"
 #include "DownloadManager.h"
 
+#include "ClientNetworkMessages.h"
+
 bool loadAndroidTranslation(QTranslator &translator, const QString &locale)
 {
     QFile file("assets:/share/GCompris/gcompris_" + locale + ".qm");
@@ -294,6 +296,9 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine(QUrl("qrc:/gcompris/src/core/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::quit, DownloadManager::getInstance(),
                      &DownloadManager::shutdown);
+
+    ClientNetworkMessages clientNetworkMessages;
+    engine.rootContext()->setContextProperty("clientNetworkMessages", &clientNetworkMessages);
 
     // add import path for shipped qml modules:
 #ifdef SAILFISHOS

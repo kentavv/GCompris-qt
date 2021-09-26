@@ -131,6 +131,10 @@ if(ECM_FOUND)
 endif()
 
 if(BUILD_SERVER)
+  set(ANDROID_WIFI_BROADCAST_PERMISSION "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />\n
+    <uses-permission android:name=\"android.permission.CHANGE_WIFI_MULTICAST_STATE\" />\n
+    <uses-permission android:name=\"android.permission.WAKE_LOCK\" />")
+
   find_package(Protobuf)
 endif(BUILD_SERVER)
 

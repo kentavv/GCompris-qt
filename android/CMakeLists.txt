@@ -192,6 +192,8 @@ add_custom_command(
   OUTPUT package_openssl
   COMMAND ${CMAKE_COMMAND} -E copy "${OPENSSL_DIR}/libcrypto.so.1.1" "${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/libcrypto${suffix_libssl}.so"
   COMMAND ${CMAKE_COMMAND} -E copy "${OPENSSL_DIR}/libssl.so.1.1" "${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/libssl${suffix_libssl}.so"
+  # temporary fix for android. We should either use submodule or do like for openssl
+  COMMAND ${CMAKE_COMMAND} -E copy ${Protobuf_LIBRARY_RELEASE} ${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/
   )
 endif()
 

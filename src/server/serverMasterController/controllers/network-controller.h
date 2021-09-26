@@ -42,7 +42,7 @@ class NetworkController : public QObject
 public:
     explicit NetworkController(QObject *parent = nullptr);
 
-    Q_INVOKABLE void broadcastDatagram();
+    Q_INVOKABLE void broadcastDatagram(const QString &broadcastIp);
     Q_INVOKABLE void sendLoginList();
 
 private slots:
