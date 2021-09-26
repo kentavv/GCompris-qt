@@ -27,13 +27,22 @@ Item {
                 // todo set default from conf, get a list of possible ip from https://doc.qt.io/qt-5/qnetworkinterface.html?
                 text: "255.255.255.255"
             }
+
+            Label {
+                text: qsTr("Device id")
+            }
+            TextInput {
+                id: deviceIdText
+                text: "test"
+            }
+
             ViewButton {
                 id: connectDevicesButton
 
                 text: qsTr("Connect devices")
 
                 onClicked: {
-                   networkController.broadcastDatagram(broadcastIpText.text);
+                   networkController.broadcastDatagram(broadcastIpText.text, deviceIdText.text);
                 }
             }
             ViewButton {
