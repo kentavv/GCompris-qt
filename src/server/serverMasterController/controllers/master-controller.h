@@ -33,6 +33,9 @@ public:
     CommandController *commandController();
     DatabaseController *databaseController();
     NavigationController *navigationController();
+
+    UserData *getUserByName(const QString &name);
+    GroupData *getGroupByName(const QString &name);
     QQmlListProperty<GroupData> ui_groups();
     QQmlListProperty<UserData> ui_users();
     QStringList ui_groupsFiltered();
