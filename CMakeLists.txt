@@ -136,6 +136,22 @@ if(BUILD_SERVER)
     <uses-permission android:name=\"android.permission.WAKE_LOCK\" />")
 
   find_package(Protobuf)
+  if(ANDROID)
+    if(Protobuf_PROTOC_EXECUTABLE)
+      if(NOT TARGET protobuf::protoc)
+        add_executable(protobuf::protoc IMPORTED)
+        if(EXISTS "${Protobuf_PROTOC_EXECUTABLE}")
+          set_target_properties(protobuf::protoc PROPERTIES
+            IMPORTED_LOCATION "${Protobuf_PROTOC_EXECUTABLE}")
+        endif()
+      else()
+        message(ERROR "protobuf::protoc already exists")
+      endif()
+    else()
+      message(ERROR "PROTOC_EXECUTABLE not exists")
+    endif()
+
+  endif()
 endif(BUILD_SERVER)
 
 # Tell CMake to run moc when necessary:

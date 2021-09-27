@@ -114,9 +114,9 @@ target_link_libraries(gcompris_core ${used_qt_modules})
 target_link_libraries(${GCOMPRIS_EXECUTABLE_NAME} ${used_qt_modules})
 
 if(BUILD_SERVER)
-  target_link_libraries(gcompris_core ${Protobuf_LIBRARIES})
-  target_link_libraries(${GCOMPRIS_EXECUTABLE_NAME} ${Protobuf_LIBRARIES})
-  install(FILES "${Protobuf_LIBRARIES}" DESTINATION bin)
+  target_link_libraries(gcompris_core protobuf::libprotobuf)
+  target_link_libraries(${GCOMPRIS_EXECUTABLE_NAME} protobuf::libprotobuf)
+  #todo for windows or linux? install(FILES "${Protobuf_LIBRARIES}" DESTINATION bin)
 endif()
 
 GCOMPRIS_ADD_RCC(core *.qml *.js resource/*.${COMPRESSED_AUDIO} resource/*.gif resource/*.png resource/*.svg resource/bonus/* resource/sounds/* resource/fonts/*.* resource/fonts/*/*.* qmldir COPYING)

@@ -91,7 +91,7 @@ else()
 endif()
 
 target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${used_qt_modules})
-target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} ${Protobuf_LIBRARIES})
+target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} protobuf::libprotobuf)
 
 target_link_libraries(${GCOMPRIS_SERVER_EXECUTABLE_NAME} gcompris_core)
 

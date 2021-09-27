@@ -51,8 +51,10 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 
 set(ANDROID_TOOLCHAIN arm-linux-androideabi)
+set(BUILD_64bits "0")
 if("${ANDROID_ARCH}" STREQUAL "arm64")
   set(ANDROID_TOOLCHAIN aarch64-linux-android)
+  set(BUILD_64bits "1")
 endif()
 
 # set android package source for androiddeployqt json file
@@ -149,7 +151,7 @@ add_custom_target(apk_install
 include(ExternalProject)
 set(OPENSSL_DIR "${CMAKE_BINARY_DIR}/external/openssl/")
 set(SCRIPT_BUILD "build_openssl.sh.in")
-if("${ANDROID_ARCH}" STREQUAL "arm64")
+if("${BUILD_64bits}" STREQUAL "1")
   set(SCRIPT_BUILD "build_openssl_64.sh.in")
 endif()
 message(STATUS "Building ${SCRIPT_BUILD}")
@@ -192,10 +194,26 @@ add_custom_command(
   OUTPUT package_openssl
   COMMAND ${CMAKE_COMMAND} -E copy "${OPENSSL_DIR}/libcrypto.so.1.1" "${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/libcrypto${suffix_libssl}.so"
   COMMAND ${CMAKE_COMMAND} -E copy "${OPENSSL_DIR}/libssl.so.1.1" "${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/libssl${suffix_libssl}.so"
-  # temporary fix for android. We should either use submodule or do like for openssl
-  COMMAND ${CMAKE_COMMAND} -E copy ${Protobuf_LIBRARY_RELEASE} ${CMAKE_BINARY_DIR}/android/libs/${ANDROID_ABI}/
   )
 endif()
+
+# protobuf
+execute_process(COMMAND ${Protobuf_PROTOC_EXECUTABLE} --version
+  OUTPUT_VARIABLE PROTOC_OUTPUT)
+string(REGEX MATCH "([0-9]+)\\.([0-9]+)\\.([0-9]+)" PROTOC_VERSION "${PROTOC_OUTPUT}")
+message(STATUS "System protoc version found: ${PROTOC_VERSION}")
+
+include(FetchContent)
+FetchContent_Declare(
+  protobuf
+  URL https://github.com/protocolbuffers/protobuf/archive/v${PROTOC_VERSION}.tar.gz
+  SOURCE_SUBDIR cmake
+)
+cmake_policy(SET CMP0077 NEW)
+set(protobuf_BUILD_TESTS OFF CACHE BOOL "")
+set(BUILD_SHARED_LIBS ON)
+set(protobuf_BUILD_PROTOC_BINARIES OFF CACHE BOOL "")
+FetchContent_MakeAvailable(protobuf)
 
 #
 add_custom_command(
