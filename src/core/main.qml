@@ -330,7 +330,8 @@ Window {
         property string serverIp
         property bool requestAlreadyInProgress: false
         onRequestConnection: {
-            if(requestAlreadyInProgress) {
+            // Only show request connection on menu
+            if(pageView.depth !== 1 || requestAlreadyInProgress) {
                 return;
             }
             requestAlreadyInProgress = true;
