@@ -59,6 +59,11 @@ set(QT_REQUIRED_VERSION 5.9.0)
 if(CMAKE_SYSTEM_NAME STREQUAL Android)
   find_package(ECM)
   set(ANDROID 1)
+
+  # Due to use of SOURCE_SUBDIR in FetchContent to retrieve protobuf
+  if("${CMAKE_VERSION}" VERSION_LESS "3.18.0")
+    message(FATAL_ERROR "Building GCompris for android requires CMake 3.18 minimum")
+  endif() 
   # TODO: possibly should be setup by toolchain one day
   set(QT_QMAKE_EXECUTABLE "${_qt5Core_install_prefix}/bin/qmake")
   if(ECM_VERSION VERSION_GREATER "5.55.0")
