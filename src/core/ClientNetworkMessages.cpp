@@ -79,21 +79,23 @@ void ClientNetworkMessages::udpRead() {
     data.resize(udpSocket->pendingDatagramSize());
     udpSocket->readDatagram(data.data(), data.size(), &address, &port);
 
-    while(data.size() > 0) {
-        if(data.size() < sizeof(qint32)) {
+    udpBuffer += data;
+    while(udpBuffer.size() > 0) {
+        if(udpBuffer.size() < sizeof(qint32)) {
             qDebug() << "not enough data to read";
             return;
         }
-        QDataStream ds(data);
+        QDataStream ds(udpBuffer);
         qint32 messageSize;
         ds >> messageSize; // It is already bigEndian
         qDebug() << "Message Received of size" << messageSize << "from" << address << data.size();
 
         data.resize(udpSocket->pendingDatagramSize());
         udpSocket->readDatagram(data.data(), data.size(), &address, &port);
+        udpBuffer += data;
 
-        if(data.size() < messageSize) {
-            qDebug() << "Message is not fully sent";
+        if(udpBuffer.size() < messageSize + sizeof(qint32)) {
+            qDebug() << "Message is not fully received. Expected:" << messageSize << ", received:" << data.size();
             return;
         }
         network::Container container;
@@ -110,7 +112,7 @@ void ClientNetworkMessages::udpRead() {
             }
             break;
         }
-        data = data.mid(messageSize + sizeof(qint32)); // Message handled, remove it from the queue
+        udpBuffer = udpBuffer.mid(messageSize + sizeof(qint32)); // Message handled, remove it from the queue
     }
 }
 
@@ -155,7 +157,7 @@ void ClientNetworkMessages::readFromSocket()
         qint32 messageSize;
         ds >> messageSize; // already bigendian
         qDebug() << "Message Received of size" << messageSize << tcpBuffer;
-        if (tcpBuffer.size() < messageSize) {
+        if (tcpBuffer.size() < messageSize + sizeof(qint32)) {
             qDebug() << "Message is not fully sent";
             return;
         }

@@ -77,6 +77,7 @@ private:
     QTcpSocket *tcpSocket;
     QUdpSocket *udpSocket;
     QByteArray tcpBuffer;
+    QByteArray udpBuffer;
 };
 
 #endif
