@@ -95,7 +95,6 @@ if(NOT ${QTQUICKCALENDAR_MODULE} STREQUAL "disabled")
       SOURCE_DIR ${_calendar_source_dir}
       CONFIGURE_COMMAND ${_qmake_program} ${_qmake_options} ${_calendar_source_dir}/qtquickcalendar.pro
       BUILD_COMMAND ${CALENDAR_BUILD_COMMAND}
-      PATCH_COMMAND ${GIT_EXECUTABLE} apply ${CMAKE_SOURCE_DIR}/cmake/patch_Qt512_to_Qt57.diff
       INSTALL_DIR ${_calendar_install_dir}
       # TODO install the .qml instead of qmlc?
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${_calendar_library_dir}${_calendar_library_file} ${_calendar_library_dir}qmldir ${_calendar_qml_files_dir}DayOfWeekRow.qml ${_calendar_qml_files_dir}MonthGrid.qml ${_calendar_qml_files_dir}WeekNumberColumn.qml ${_calendar_install_dir}

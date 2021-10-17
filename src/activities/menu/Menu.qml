@@ -10,7 +10,7 @@
 import QtQuick 2.9
 import "../../core"
 import GCompris 1.0
-import QtGraphicalEffects 1.0
+//import QtGraphicalEffects 1.0
 import "qrc:/gcompris/src/core/core.js" as Core
 
 // For TextField
@@ -93,7 +93,7 @@ ActivityBase {
         // first initialize the menu. This connection is to refresh
         // automatically the menu at start.
         target: ApplicationInfo
-        onIsBox2DInstalledChanged: {
+        function onIsBox2DInstalledChanged() {
             ActivityInfoTree.filterByTag(activity.currentTag, currentCategory)
             ActivityInfoTree.filterEnabledActivities()
         }
@@ -631,13 +631,13 @@ ActivityBase {
                   GradientStop { position: 0.96; color: "#00FFFFFF"}
                 }
             }
-            layer.enabled: ApplicationInfo.useOpenGL
+            /*layer.enabled: ApplicationInfo.useOpenGL
             layer.effect: OpacityMask {
                 id: activitiesOpacity
                 source: activitiesGrid
                 maskSource: activitiesMask
                 anchors.fill: activitiesGrid
-            }
+            }*/
         }
 
         // The scroll buttons
@@ -689,7 +689,7 @@ ActivityBase {
 
             Connections {
                 target: activity
-                onCurrentTagChanged: {
+                function onCurrentTagChanged() {
                     if (activity.currentTag === 'search') {
                         if(ApplicationSettings.isVirtualKeyboard && !keyboard.isPopulated) {
                             keyboard.populate();

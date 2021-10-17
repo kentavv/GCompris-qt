@@ -10,7 +10,7 @@
 
 import QtQuick 2.9
 import GCompris 1.0
-import QtMultimedia 5.0
+import QtMultimedia
 
 import "../../core"
 import "qrc:/gcompris/src/core/core.js" as Core
@@ -63,7 +63,9 @@ Item {
             Connections {
                 target: DownloadManager
 
-                onDownloadFinished: voicesRow.localeChanged()
+                function onDownloadFinished() {
+                    voicesRow.localeChanged()
+                }
             }
 
             GCText {
@@ -172,9 +174,9 @@ Item {
                 id: backgroundMusicName
                 height: parent.height
                 width: parent.width - 35 * ApplicationInfo.ratio
-                enabled: backgroundMusic.playbackState === Audio.PlayingState
+                enabled: backgroundMusic.playbackState === MediaPlayer.PlayingState
                 text: {
-                    if(backgroundMusic.playbackState !== Audio.PlayingState)
+                    if(backgroundMusic.playbackState !== MediaPlayer.PlayingState)
                         return qsTr("Not playing")
                     else if (backgroundMusic.metaDataMusic[0] !== undefined)
                         return (qsTr("Title: %1  Artist: %2").arg(backgroundMusic.metaDataMusic[0]).arg(backgroundMusic.metaDataMusic[1]))
@@ -191,7 +193,7 @@ Item {
                 source: "qrc:/gcompris/src/core/resource/bar_next.svg"
                 height: 30 * ApplicationInfo.ratio
                 sourceSize.width: height
-                visible: (backgroundMusic.playbackState === Audio.PlayingState && !backgroundMusic.muted)
+                visible: (backgroundMusic.playbackState === MediaPlayer.PlayingState && !backgroundMusic.muted)
                 MouseArea {
                     anchors.fill: parent
                     enabled: parent.visible
@@ -262,7 +264,9 @@ Item {
 
         Connections {
             target: DownloadManager
-            onDownloadFinished: wordsetBox.updateStatus()
+            function onDownloadFinished() {
+                wordsetBox.updateStatus()
+            }
         }
 
         /* Technically wordset config is a string that holds the wordset name or '' for the

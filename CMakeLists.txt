@@ -33,7 +33,7 @@ string(TIMESTAMP BUILD_DATE %Y%m)
 # cmake modules setup
 find_package(ECM 1.4.0 QUIET NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake/)
-set(CMAKE_PREFIX_PATH "${Qt5_DIR}/lib/cmake/Qt5")
+set(CMAKE_PREFIX_PATH "${Qt_DIR}/lib/cmake/Qt6")
 
 # KDE po to qm tools
 if(ECM_FOUND)
@@ -54,7 +54,7 @@ if(BUILD_TESTING)
   include(CodeQualityUtils)
 endif()
 
-set(QT_REQUIRED_VERSION 5.9.0)
+set(QT_REQUIRED_VERSION 5.15)
 
 if(CMAKE_SYSTEM_NAME STREQUAL Android)
   find_package(ECM)
@@ -84,6 +84,8 @@ endif()
 
 set(GCOMPRIS_VERSION ${GCOMPRIS_MAJOR_VERSION}.${GCOMPRIS_MINOR_VERSION})
 
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+
 # An integer value that represents the version of the application
 # Increase it at each release
 math(EXPR GCOMPRIS_VERSION_CODE "${GCOMPRIS_MAJOR_VERSION}*10000 + ${GCOMPRIS_MINOR_VERSION}*100 + ${GCOMPRIS_PATCH_VERSION}")
@@ -95,19 +97,28 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
             directory and create a build directory and call \"${CMAKE_COMMAND} <path to the sources>\".")
 endif()
 
-find_package(Qt5 ${QT_REQUIRED_VERSION} REQUIRED
-    Qml Quick Gui Multimedia Core Svg Xml XmlPatterns LinguistTools Sensors QuickControls2)
-
-if (Qt5Widgets_VERSION VERSION_GREATER 5.9.9)
-  find_package(Qt5 ${QT_REQUIRED_VERSION} REQUIRED QuickTemplates2)
+find_package(Qt6 COMPONENTS Widgets QUIET)
+set(QT_MAJOR Qt6)
+if (NOT Qt6_FOUND)
+  set(QT_MAJOR Qt5)
+endif()
+find_package(${QT_MAJOR} ${QT_REQUIRED_VERSION} REQUIRED
+  Qml Quick Gui Multimedia Core Svg Xml LinguistTools Sensors QuickControls2)
+# Specific Qt5 packages
+set(Qt_VERSION ${${QT_MAJOR}_VERSION})
+message(STATUS "Using ${QT_MAJOR} version: ${Qt_VERSION}")
+if (${Qt_VERSION} VERSION_LESS 6.0.0)
+  find_package(${QT_MAJOR} ${QT_REQUIRED_VERSION} REQUIRED XmlPatterns)
+  if(ANDROID)
+    find_package(${QT_MAJOR} ${QT_REQUIRED_VERSION} REQUIRED AndroidExtras)
+  endif()
+endif()
+if (${Qt_VERSION} VERSION_GREATER 5.9.9)
+  find_package(${QT_MAJOR} ${QT_REQUIRED_VERSION} REQUIRED QuickTemplates2)
 endif()
   
-if(ANDROID)
-    find_package(Qt5 ${QT_REQUIRED_VERSION} REQUIRED AndroidExtras)
-endif()
-
 if(SAILFISHOS)
-    find_package(Qt5 ${QT_REQUIRED_VERSION} REQUIRED Widgets)
+  find_package({QT_MAJOR} ${QT_REQUIRED_VERSION} REQUIRED Widgets)
 endif()
 
 ## For now we workaround CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION to clang with a command variable, so not needed
@@ -226,9 +237,9 @@ foreach(PoSource ${TRANSLATIONS_FILES})
     # Remove the obsolete translations and set po in the ts output file
     COMMAND msgattrib --no-obsolete  ${CMAKE_CURRENT_SOURCE_DIR}/${PoSource} -o ${OutTsFile}
     # Convert the po into ts
-    COMMAND Qt5::lconvert -if po -of ts -i ${OutTsFile} -o ${OutTsFile}
+    COMMAND Qt::lconvert -if po -of ts -i ${OutTsFile} -o ${OutTsFile}
     # Convert the ts in qm removing non finished translations
-    COMMAND Qt5::lrelease -compress -nounfinished ${OutTsFile} -qm ${GCOMPRIS_TRANSLATIONS_DIR}/${QmOutput}
+    COMMAND Qt::lrelease -compress -nounfinished ${OutTsFile} -qm ${GCOMPRIS_TRANSLATIONS_DIR}/${QmOutput}
     )
   list(APPEND QM_FILES ${QmOutput})
 endforeach()

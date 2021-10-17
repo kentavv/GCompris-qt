@@ -126,7 +126,7 @@ Window {
         id: backgroundMusic
         isBackgroundMusic: true
         muted: !ApplicationSettings.isBackgroundMusicEnabled
-        volume: ApplicationSettings.backgroundMusicVolume
+        //volume: ApplicationSettings.backgroundMusicVolume
 
         onMutedChanged: {
             if(!hasAudio && !files.length) {

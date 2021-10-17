@@ -9,7 +9,7 @@
  */
 import QtQuick 2.9
 import GCompris 1.0
-import QtGraphicalEffects 1.0
+//import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.2
 
 Item {
@@ -87,7 +87,7 @@ Item {
         }
     }
     
-    DropShadow {
+    /*DropShadow {
         anchors.fill: button
         cached: false
         horizontalOffset: 3
@@ -97,5 +97,5 @@ Item {
         color: "#80000000"
         source: button
         scale: button.scale
-    }
+    }*/
 }
