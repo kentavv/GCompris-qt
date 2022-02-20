@@ -124,7 +124,7 @@ install(TARGETS ${GCOMPRIS_EXECUTABLE_NAME}
 
 if(BUILD_STANDALONE)
   # Qt plugins to install
-  set(_qt_plugins "")
+  set(_qt_plugins Qt5::QWebpPlugin)
   if(NOT SAILFISHOS)
     list(APPEND _qt_plugins Qt5::QJpegPlugin)
   endif()
