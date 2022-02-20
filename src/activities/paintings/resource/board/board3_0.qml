@@ -20,7 +20,7 @@ QtObject {
          "height": 515
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_c3.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_c3.webp",
          "x" : "0.625",
          "y" : "0.735"
       },
@@ -30,12 +30,12 @@ QtObject {
          "y" : "0.735"
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_a3.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_a3.webp",
          "x" : "0.372",
          "y" : "0.762"
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_c2.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_c2.webp",
          "x" : "0.638",
          "y" : "0.47"
       },
@@ -45,12 +45,12 @@ QtObject {
          "y" : "0.497"
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_a2.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_a2.webp",
          "x" : "0.357",
          "y" : "0.498"
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_c1.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_c1.webp",
          "x" : "0.625",
          "y" : "0.231"
       },
@@ -60,7 +60,7 @@ QtObject {
          "y" : "0.259"
       },
       {
-         "pixmapfile" : "image/Arcimboldo_Librarian_a1.png",
+         "pixmapfile" : "image/Arcimboldo_Librarian_a1.webp",
          "x" : "0.373",
          "y" : "0.231"
       }
